@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-page="blocks">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>六块积木，模型只占一块 · Agent 学习空间</title>
+<meta name="description" content="做个 Agent 不是「调个模型」，是搭一套装置。这一页用一张图和一个小王助理，把六块积木逐个对上号。">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Ccircle cx='16' cy='16' r='15' fill='%23F6F2EC'/%3E%3Ccircle cx='16' cy='9' r='3.2' fill='none' stroke='%23B8462A' stroke-width='2'/%3E%3Ccircle cx='9' cy='21' r='3.2' fill='none' stroke='%23B8462A' stroke-width='2'/%3E%3Ccircle cx='23' cy='21' r='3.2' fill='none' stroke='%23B8462A' stroke-width='2'/%3E%3Cpath d='M14.2 11.4L10.4 18.2M17.8 11.4l3.8 6.8M12.2 21h7.6' stroke='%23B8462A' stroke-width='1.6' fill='none'/%3E%3C/svg%3E">
+<link rel="stylesheet" href="assets/style.css?v=20261107b">
+</head>
+<body>
+<main class="doc" id="doc">
+
+  <header class="lesson-head">
+    <div class="kicker"><span class="sec-no">01</span><span>第一部分 · 它由什么拼成</span><span>·</span><span>SIX BUILDING BLOCKS</span></div>
+    <h1>六块积木，模型只占一块</h1>
+    <p class="lede">做个 Agent 不是「调个模型」，是搭一套装置。这一页用一张图和一个小王助理，把六块积木逐个对上号。</p>
+    <div class="meta-row">
+      <span class="pill acc">6 分钟</span>
+      <span class="pill">零基础</span>
+      <span class="pill">含结构图</span>
+    </div>
+  </header>
+
+  <div class="whybox">
+    <div class="whybox-h">这一页在能力栈上的位置</div>
+    <div class="whybox-g">
+      <div class="wide"><b>对应环节</b><span>结构层 · 组成部件</span></div>
+      <div><b>不学卡在哪</b><span>以为换个更强的模型就能解决问题，忽略了外面那五块。</span></div>
+      <div><b>它解决什么</b><span>把「一个 Agent」拆成可分别实现、分别排查的六块。</span></div>
+    </div>
+  </div>
+
+  <h2><span class="n">1</span>模型只占中间那一小块</h2>
+  <div class="sec">
+    <p>很多人以为做个 Agent 就是「调个模型」。其实模型只占中间那一块，其余全是你要搭的。</p>    <div class="flow"><div class="fn"><b>角色设定</b>你是谁、规矩是什么</div><div class="fa">→</div><div class="fn"><b>记忆</b>刚才聊了啥、以前做过啥</div><div class="fa">→</div><div class="fn"><b>大模型</b>只读文字、只写文字</div><div class="fa">→</div><div class="fn"><b>工具</b>查资料、算数、发消息</div><div class="fa">→</div><div class="fn"><b>回填</b>把查到的再喂回去</div></div>    <div class="tw"><table class="tb">
+      <thead><tr><th style="width:26%">这一块</th><th style="width:38%">放在哪</th><th style="width:36%">谁负责</th></tr></thead>
+      <tbody>
+        <tr><td>角色设定（Profile）</td><td>系统提示词的最前面</td><td>你写</td></tr>
+        <tr><td>记忆（Memory）</td><td>每次请求前拼进上下文</td><td>你的程序</td></tr>
+        <tr><td>大模型（LLM）</td><td>一次 API 调用</td><td>供应商</td></tr>
+        <tr><td>工具（Tools）</td><td>工具描述 + 你的执行函数</td><td>你写</td></tr>
+        <tr><td>结果回填（Observation）</td><td>追加到对话记录</td><td>你的程序</td></tr>
+      </tbody>
+    </table></div>    <p>六块里只有「大模型」是租的，其余五块都是你亲手搭的。这也解释了为什么同一个模型，不同产品用起来差别巨大。</p>
+  </div>
+
+  <h2><span class="n">2</span>想象你请了个助理，叫小王</h2>
+  <div class="sec">
+    <p>上面每一块都能对应到小王身上，对着看一遍就记住了：</p>    <div class="def">
+      <div class="def-h">大模型 = 他的脑子<span class="loc">租来的</span></div>
+      <p>读得懂话、想得明白、写得出像样的回复。但有个死穴：他只会读写文字，没有手。</p><p>你说「帮我把文件发出去」，他能写一句「好的，我这就发」，文件还在原地没动。</p>
+    </div>    <div class="def">
+      <div class="def-h">角色设定 = 给他的岗位说明<span class="loc">你写</span></div>
+      <p>「你是画室助教，只答课程相关的问题，学生隐私不能透露。」决定了他的口吻和守不守规矩。</p><p>岗位说明写歪了，后面全是歪的——这一块改起来最便宜，影响最大。</p>
+    </div>    <div class="def">
+      <div class="def-h">记忆 = 他的工作笔记<span class="loc">你搭</span></div>
+      <p>短期的是「刚才聊到哪了」，长期的是「上个月那个问题后来怎么解决的」。</p><p>为什么要分开？因为模型本身记不住——每次对话对它都是初次见面，所谓「它记得我说过的话」，是你每次把记录重新贴给它看。</p>
+    </div>    <div class="def">
+      <div class="def-h">工具 = 他的手<span class="loc">你接</span></div>
+      <p>查天气、搜网页、读文件、发邮件。每个工具本质就是一个小程序，模型自己按不动，只能「说」自己按哪个。</p>
+    </div>    <div class="def">
+      <div class="def-h">结果回填 = 把看到的告诉他<span class="loc">你写</span></div>
+      <p>工具跑完拿到「明天小雨」，要重新塞回去，他才知道下一步该干嘛。少了这步，他就永远停在「我派人去查了」。</p>
+    </div>
+  </div>
+
+  <h2><span class="n">3</span>为什么要拆成六块看</h2>
+  <div class="sec">
+    <p>因为拆开之后，「出错」这件事第一次可以被定位。同一个坏结果，可能是五种原因之一：</p>    <div class="tw"><table class="tb">
+      <thead><tr><th style="width:26%">现象</th><th style="width:28%">先说哪一块坏了</th><th style="width:46%">怎么验证</th></tr></thead>
+      <tbody>
+        <tr><td>答得很礼貌但答偏了</td><td>角色设定</td><td>把岗位说明改严一句，重跑同一题</td></tr>
+        <tr><td>同一个坑反复摔</td><td>记忆</td><td>把上次的结论手动贴进上下文，看是否还犯</td></tr>
+        <tr><td>说要查但没查</td><td>工具描述 / harness</td><td>打印模型原始返回，看有没有发出工具调用</td></tr>
+        <tr><td>查了却当成没查</td><td>结果回填</td><td>看回填的格式是不是它读得懂的</td></tr>
+        <tr><td>看起来像在乱想</td><td>模型本身</td><td>换成规则更清晰的提示，看是否还乱</td></tr>
+      </tbody>
+    </table></div>    <div class="note"><p>如果不拆，你只会说「Agent 不行」。拆开之后，你能说出「是回填格式让它误解了」，改一行就好。</p></div>
+  </div>
+
+  <div class="summary">
+    <h3>本页要点</h3>
+    <ol>
+      <li>一个 Agent 六块：角色设定、记忆、模型、工具、结果回填。模型只占一块。</li>
+      <li>小王助理的比喻可以逐块对上，记不住结构时回想他。</li>
+      <li>拆成六块的价值在于能定位错误，而不是笼统地说「模型不行」。</li>
+    </ol>
+  </div>
+
+  <h2><span class="n">★</span>自测</h2>
+  <div class="quiz">
+    <div class="qz">
+      <div class="q"><i>Q1</i>模型说「我这就去发文件」，文件却没动。最可能坏在哪？</div>
+      <div class="opts">
+        <button class="opt"><i>A</i><span>模型太小</span></button>
+        <button class="opt" data-ok="1"><i>B</i><span>只给了它「说话」的能力，没接发送工具，也没做结果回填</span></button>
+        <button class="opt"><i>C</i><span>用户描述不清</span></button>
+        <button class="opt"><i>D</i><span>网络问题</span></button>
+      </div>
+      <div class="ex">这是「没有手」的典型表现。模型能描述动作，但动作得由你的程序执行，执行结果还得喂回去。</div>
+    </div>
+    <div class="qz">
+      <div class="q"><i>Q2</i>Agent 反复犯同一个错，优先怀疑哪一块？</div>
+      <div class="opts">
+        <button class="opt"><i>A</i><span>角色设定</span></button>
+        <button class="opt" data-ok="1"><i>B</i><span>记忆——它没带上一次的结论</span></button>
+        <button class="opt"><i>C</i><span>工具数量</span></button>
+        <button class="opt"><i>D</i><span>模型温度</span></button>
+      </div>
+      <div class="ex">「反复」这个词指向记忆。验证方法很简单：把上次的经验手动贴进上下文，看它还犯不犯。</div>
+    </div>
+  </div>
+  <div class="cite">
+    <b>资料出处</b>
+    Lilian Weng《LLM Powered Autonomous Agents》四件套拆法，按工程实现细化为六块。
+  </div>
+
+  <div id="termIndex"></div>
+</main>
+<script src="assets/course.js?v=20261107b"></script>
+</body>
+</html>

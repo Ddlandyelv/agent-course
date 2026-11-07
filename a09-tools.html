@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-page="tools">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>让它学会用工具 · Agent 学习空间</title>
+<meta name="description" content="模型能说「我帮你查」，但它查不了。这一页讲工具调用从哪来（Toolformer）、工程上真正要写什么，以及它和工作流的分界。">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Ccircle cx='16' cy='16' r='15' fill='%23F6F2EC'/%3E%3Ccircle cx='16' cy='9' r='3.2' fill='none' stroke='%23B8462A' stroke-width='2'/%3E%3Ccircle cx='9' cy='21' r='3.2' fill='none' stroke='%23B8462A' stroke-width='2'/%3E%3Ccircle cx='23' cy='21' r='3.2' fill='none' stroke='%23B8462A' stroke-width='2'/%3E%3Cpath d='M14.2 11.4L10.4 18.2M17.8 11.4l3.8 6.8M12.2 21h7.6' stroke='%23B8462A' stroke-width='1.6' fill='none'/%3E%3C/svg%3E">
+<link rel="stylesheet" href="assets/style.css?v=20261107b">
+</head>
+<body>
+<main class="doc" id="doc">
+
+  <header class="lesson-head">
+    <div class="kicker"><span class="sec-no">05</span><span>第二部分 · 从会说话到会动手</span><span>·</span><span>TOOL USE</span></div>
+    <h1>让它学会用工具</h1>
+    <p class="lede">模型能说「我帮你查」，但它查不了。这一页讲工具调用从哪来（Toolformer）、工程上真正要写什么，以及它和工作流的分界。</p>
+    <div class="meta-row">
+      <span class="pill acc">9 分钟</span>
+      <span class="pill">含工程要点</span>
+      <span class="pill">接上一页 CoT</span>
+    </div>
+  </header>
+
+  <div class="whybox">
+    <div class="whybox-h">这一页在能力栈上的位置</div>
+    <div class="whybox-g">
+      <div class="wide"><b>对应环节</b><span>能力层 · 行动</span></div>
+      <div><b>不学卡在哪</b><span>不知道怎么给模型写工具，于是工具一堆但总调错、总不调。</span></div>
+      <div><b>它解决什么</b><span>把工具调用拆成「描述 + 参数 + 返回」三件要写对的事。</span></div>
+    </div>
+  </div>
+
+  <h2><span class="n">1</span>缺什么：它没有手</h2>
+  <div class="sec">
+    <p>模型能写「我帮你查一下」，但它查不了。工具调用要解决的就是这一层：<b>让模型说出「我要用哪个工具、参数是什么」，由外面的程序去执行。</b></p>    <p>这件事听起来像工程细节，其实是一篇论文开的头。</p>
+  </div>
+
+  <h2><span class="n">2</span>Toolformer：让它自己试出「调用之后更有用」</h2>
+  <div class="sec">
+    <p>2023 年 2 月，Meta 的 Schick 等人换了个思路：<b>不用人教它怎么用工具，让它自己试。</b></p>    <ol>
+      <li>让模型自己生成一堆候选的 API 调用（查计算器、查维基、翻译、查日历）。</li>
+      <li>真的执行这些调用，比较「加了这个调用」和「不加」时，预测下一个词的效果好坏。</li>
+      <li>变好就保留这条样本，用来自我微调。</li>
+    </ol>    <p>等于用「调用之后更会预测」当老师。关键数字：只用少量示例做自监督，在计算器、问答、翻译、日历等任务上超过同规模的 GPT-3，同时没有损害它的语言能力。</p>    <p>局限也很明确：它只学得会「有明确数值收益」的调用；需要串好几步才能见效的复杂工具链，这种信号太弱，学不到。</p>    <div class="def">
+      <div class="def-h">今天的对应<span class="loc">arXiv:2302.04761 · NeurIPS 2023</span></div>
+      <p>function calling 的思想源头。现在你写一个工具描述交给模型、由它自己判断要不要调，这条路是它开的。</p>
+    </div>
+  </div>
+
+  <h2><span class="n">3</span>工程上真正要写的是三样</h2>
+  <div class="sec">
+    <div class="tw"><table class="tb">
+      <thead><tr><th style="width:24%">要写什么</th><th style="width:40%">写不好会怎样</th><th style="width:36%">一条经验</th></tr></thead>
+      <tbody>
+        <tr><td><b>工具名 + 一句话说明</b></td><td>模型不知道什么时候该用它，或者到处乱用</td><td>说明里写「什么时候用」，不只写「它是什么」</td></tr>
+        <tr><td><b>参数 schema</b></td><td>参数缺字段、类型错、传了不存在的枚举值</td><td>枚举写全，必填项标清，能给默认值就给</td></tr>
+        <tr><td><b>返回值</b></td><td>太长挤爆上下文，或格式它读不懂</td><td>结构化、截断、错误也返回结构化</td></tr>
+      </tbody>
+    </table></div>    <p>经验之谈：<b>工具描述是给模型看的提示词，不是给人看的文档。</b>同一段代码，把描述从「查询天气」改成「当用户问今天/明天/未来几天的天气、温度、是否下雨时使用，参数 city 用中文城市名」，调用准确率会明显不同。</p>    <div class="note"><p>工具不是越多越好。每多一个工具，模型就多一个选错的机会。超过 10 个工具时，先分组或加一层「先选类别再选工具」。</p></div>
+  </div>
+
+  <h2><span class="n">4</span>工具调用与「工作流」的分界</h2>
+  <div class="sec">
+    <p>同样是调接口，两种情况完全不同：</p>    <div class="tw"><table class="tb">
+      <thead><tr><th style="width:26%"></th><th style="width:30%">谁决定调哪个</th><th style="width:44%">例子</th></tr></thead>
+      <tbody>
+        <tr><td><b>工作流里的调用</b></td><td>你的代码。到第几步就调第几个</td><td>先把文档切块 → 向量化 → 检索 → 拼进提示词</td></tr>
+        <tr><td><b>Agent 里的调用</b></td><td>模型。它看当前情况自己挑</td><td>同样的任务，它先判断「要不要先查一下术语」</td></tr>
+      </tbody>
+    </table></div>    <p>这也是 0.2 那页的判断标准落到实现层的样子：<b>工具由谁挑，决定了它是工作流还是 Agent。</b></p>
+  </div>
+
+  <div class="summary">
+    <h3>本页要点</h3>
+    <ol>
+      <li>工具调用解决「没有手」：模型说调哪个，程序去执行。</li>
+      <li>Toolformer 用「调用后是否更会预测」当信号，让模型自学何时调工具。</li>
+      <li>工程上真正要写的是工具名与用途说明、参数 schema、结构化返回值。</li>
+      <li>工具由代码挑是工作流，由模型挑才是 Agent。</li>
+    </ol>
+  </div>
+
+  <h2><span class="n">★</span>自测</h2>
+  <div class="quiz">
+    <div class="qz">
+      <div class="q"><i>Q1</i>Toolformer 用什么当「该不该保留这个调用」的信号？</div>
+      <div class="opts">
+        <button class="opt"><i>A</i><span>人工标注</span></button>
+        <button class="opt" data-ok="1"><i>B</i><span>加了调用之后，预测下一个词的效果是否变好</span></button>
+        <button class="opt"><i>C</i><span>调用速度快不快</span></button>
+        <button class="opt"><i>D</i><span>调用次数多少</span></button>
+      </div>
+      <div class="ex">这就是它的巧妙处：不需要人标注「这个调用对不对」，用语言模型自己的目标（预测下一个词）当老师。</div>
+    </div>
+    <div class="qz">
+      <div class="q"><i>Q2</i>工具描述应该怎么写？</div>
+      <div class="opts">
+        <button class="opt"><i>A</i><span>写成给人看的 API 文档</span></button>
+        <button class="opt" data-ok="1"><i>B</i><span>写成给模型看的提示：说明什么时候该用、参数怎么填</span></button>
+        <button class="opt"><i>C</i><span>越短越好，只写名字</span></button>
+        <button class="opt"><i>D</i><span>用英文写才准</span></button>
+      </div>
+      <div class="ex">工具描述本质是提示词。写清「何时使用」比写清「它是什么」对准确率影响更大。</div>
+    </div>
+  </div>
+  <div class="cite">
+    <b>资料出处</b>
+    Schick et al.《Toolformer》(arXiv:2302.04761)；OpenAI function calling 文档。
+  </div>
+
+  <div id="termIndex"></div>
+</main>
+<script src="assets/course.js?v=20261107b"></script>
+</body>
+</html>

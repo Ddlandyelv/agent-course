@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-page="shapes">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>结构就三种，按三个问题分 · Agent 学习空间</title>
+<meta name="description" content="谁决定下一步、几个角色、记不记事——三个问题答完，结构就定了。这一页把三种形态的成本与适用边界摆在一起。">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Ccircle cx='16' cy='16' r='15' fill='%23F6F2EC'/%3E%3Ccircle cx='16' cy='9' r='3.2' fill='none' stroke='%23B8462A' stroke-width='2'/%3E%3Ccircle cx='9' cy='21' r='3.2' fill='none' stroke='%23B8462A' stroke-width='2'/%3E%3Ccircle cx='23' cy='21' r='3.2' fill='none' stroke='%23B8462A' stroke-width='2'/%3E%3Cpath d='M14.2 11.4L10.4 18.2M17.8 11.4l3.8 6.8M12.2 21h7.6' stroke='%23B8462A' stroke-width='1.6' fill='none'/%3E%3C/svg%3E">
+<link rel="stylesheet" href="assets/style.css?v=20261107b">
+</head>
+<body>
+<main class="doc" id="doc">
+
+  <header class="lesson-head">
+    <div class="kicker"><span class="sec-no">02</span><span>第一部分 · 它由什么拼成</span><span>·</span><span>THREE SHAPES</span></div>
+    <h1>结构就三种，按三个问题分</h1>
+    <p class="lede">谁决定下一步、几个角色、记不记事——三个问题答完，结构就定了。这一页把三种形态的成本与适用边界摆在一起。</p>
+    <div class="meta-row">
+      <span class="pill acc">7 分钟</span>
+      <span class="pill">读完 01 更顺</span>
+      <span class="pill">含成本对照</span>
+    </div>
+  </header>
+
+  <div class="whybox">
+    <div class="whybox-h">这一页在能力栈上的位置</div>
+    <div class="whybox-g">
+      <div class="wide"><b>对应环节</b><span>结构层 · 形态选择</span></div>
+      <div><b>不学卡在哪</b><span>一上来就做自主循环，结果不可控、账单吓人、出错找不到位置。</span></div>
+      <div><b>它解决什么</b><span>给出「默认选 A」的判断顺序，避免过度设计。</span></div>
+    </div>
+  </div>
+
+  <h2><span class="n">1</span>按三个问题分，就够了</h2>
+  <div class="sec">
+    <p>同样是 Agent，不同产品的结构差很远。不用记名词，记住这三个问题就够了：</p>    <div class="tw"><table class="tb">
+      <thead><tr><th style="width:26%">问题</th><th style="width:34%">两种答案</th><th style="width:40%">影响</th></tr></thead>
+      <tbody>
+        <tr><td><b>下一步谁说了算？</b></td><td>你提前把流程写死 / 让它自己临场判断</td><td>成本、可控性、能不能处理意外</td></tr>
+        <tr><td><b>有几个角色？</b></td><td>一个人干完 / 分成几个岗位接力</td><td>稳定性、开销、排错难度</td></tr>
+        <tr><td><b>记不记事？</b></td><td>每次都从零开始 / 带着历史</td><td>长任务能力、重复犯错率</td></tr>
+      </tbody>
+    </table></div>    <p>三个问题的答案组合起来，落到工程上其实只有三种形态。</p>
+  </div>
+
+  <h2><span class="n">2</span>A · 固定流水线（流程你写死）</h2>
+  <div class="sec">
+    <div class="flow"><div class="fn"><b>读取输入</b>学生名单表格</div><div class="fa">→</div><div class="fn"><b>模型改写</b>按模板生成</div><div class="fa">→</div><div class="fn"><b>模型检查</b>格式对不对</div><div class="fa">→</div><div class="fn"><b>输出结果</b>课表</div></div>    <p>适合步骤明确、每次结果要一致的活。比如把学生名单整理成课表。</p>    <p>优点：便宜、可控、好排错——哪一步错了就改哪一步。缺点：<b>不会变通</b>。表格多了一列「备注」，它不会自己想该不该带上。</p>
+  </div>
+
+  <h2><span class="n">3</span>B · 自主循环（模型自己决定下一步）</h2>
+  <div class="sec">
+    <div class="flow"><div class="fn"><b>模型思考</b>该做什么</div><div class="fa">→</div><div class="fn"><b>调用工具</b>真的去做</div><div class="fa">→</div><div class="fn"><b>看到结果</b>判断够不够</div><div class="fa">→</div><div class="fn"><b>收工 / 再来一轮</b>不够就带着新信息重来</div></div>    <p>适合步骤事先说不准的活。比如「查清楚这家画室的评价，再写段简介」——要查几个站、看不看得懂、要不要换关键词，事先都定不下来。</p>    <p>代价：<b>贵、难调试、可能跑飞</b>。同一件事可能三轮结束，也可能三十轮还在绕。所以必须有轮数上限。</p>
+  </div>
+
+  <h2><span class="n">4</span>C · 多角色协作（分工接力）</h2>
+  <div class="sec">
+    <div class="flow"><div class="fn"><b>策划员</b>拆任务</div><div class="fa">→</div><div class="fn"><b>执行员</b>干活</div><div class="fa">→</div><div class="fn"><b>审核员</b>挑错</div></div>    <p>适合一个人判断不可靠时。另开一个角色专门挑错，比让它自查有效得多——因为它自己看不出自己的盲区。</p>    <p>代价：最稳，也最慢最贵。角色之间的每句话都要过一遍模型。</p>
+  </div>
+
+  <h2><span class="n">5</span>三种没有优劣，只是拿成本换灵活</h2>
+  <div class="sec">
+    <div class="tw"><table class="tb">
+      <thead><tr><th style="width:24%"></th><th style="width:19%">便宜可控</th><th style="width:19%">能应变</th><th style="width:19%">好排错</th><th style="width:19%">账单</th></tr></thead>
+      <tbody>
+        <tr><td><b>A 固定流水线</b></td><td>★★★</td><td>★</td><td>★★★</td><td>低</td></tr>
+        <tr><td><b>B 自主循环</b></td><td>★</td><td>★★★</td><td>★</td><td>中到高</td></tr>
+        <tr><td><b>C 多角色</b></td><td>★</td><td>★★</td><td>★★</td><td>高</td></tr>
+      </tbody>
+    </table></div>    <div class="note"><p>能用 A 解决的，别上 B。只有步骤事先说不准时，才需要 B。新手最常见的失误是一上来就做 B，结果流程不可控、账单吓人、出错找不到哪一步。</p></div>
+  </div>
+
+  <div class="summary">
+    <h3>本页要点</h3>
+    <ol>
+      <li>结构按三个问题分：谁决定下一步、几个角色、记不记事。</li>
+      <li>A 流水线便宜可控但不会变通；B 自主循环灵活但贵；C 多角色最稳也最贵。</li>
+      <li>默认选 A，只有步骤事先说不准时才上 B。</li>
+    </ol>
+  </div>
+
+  <h2><span class="n">★</span>自测</h2>
+  <div class="quiz">
+    <div class="qz">
+      <div class="q"><i>Q1</i>任务步骤明确、每次结果要求一致，应该选哪种结构？</div>
+      <div class="opts">
+        <button class="opt" data-ok="1"><i>A</i><span>A 固定流水线</span></button>
+        <button class="opt"><i>B</i><span>B 自主循环</span></button>
+        <button class="opt"><i>C</i><span>C 多角色协作</span></button>
+        <button class="opt"><i>D</i><span>三种都行，越复杂越好</span></button>
+      </div>
+      <div class="ex">步骤明确就用流水线。上自主循环只会增加成本和不确定性，不会带来收益。</div>
+    </div>
+    <div class="qz">
+      <div class="q"><i>Q2</i>为什么「另开一个角色挑错」比让它自查更有效？</div>
+      <div class="opts">
+        <button class="opt"><i>A</i><span>因为另一个模型更大</span></button>
+        <button class="opt" data-ok="1"><i>B</i><span>因为它对自己写的东西有盲区，换个视角才能看见</span></button>
+        <button class="opt"><i>C</i><span>因为多角色更便宜</span></button>
+        <button class="opt"><i>D</i><span>因为审核员不会累</span></button>
+      </div>
+      <div class="ex">自查的问题在于「评不准自己没意识到的错」。换个角色等于换了一套评判标准。</div>
+    </div>
+  </div>
+  <div class="cite">
+    <b>资料出处</b>
+    AutoGen 的协作形态分类；工程实践中对「工作流 vs 自主循环」的取舍经验。
+  </div>
+
+  <div id="termIndex"></div>
+</main>
+<script src="assets/course.js?v=20261107b"></script>
+</body>
+</html>

@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-page="vs">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>它和另外三样东西差在哪 · Agent 学习空间</title>
+<meta name="description" content="大模型、工作流、RPA、Agent，四个词天天混着用。其实只差一个问题：<b>下一步谁说了算</b>。这一页用一张表和一把伞把分界划清。">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Ccircle cx='16' cy='16' r='15' fill='%23F6F2EC'/%3E%3Ccircle cx='16' cy='9' r='3.2' fill='none' stroke='%23B8462A' stroke-width='2'/%3E%3Ccircle cx='9' cy='21' r='3.2' fill='none' stroke='%23B8462A' stroke-width='2'/%3E%3Ccircle cx='23' cy='21' r='3.2' fill='none' stroke='%23B8462A' stroke-width='2'/%3E%3Cpath d='M14.2 11.4L10.4 18.2M17.8 11.4l3.8 6.8M12.2 21h7.6' stroke='%23B8462A' stroke-width='1.6' fill='none'/%3E%3C/svg%3E">
+<link rel="stylesheet" href="assets/style.css?v=20261107b">
+</head>
+<body>
+<main class="doc" id="doc">
+
+  <header class="lesson-head">
+    <div class="kicker"><span class="sec-no">0.2</span><span>第零幕 · 它到底是什么</span><span>·</span><span>AGENT VS THE REST</span></div>
+    <h1>它和另外三样东西差在哪</h1>
+    <p class="lede">大模型、工作流、RPA、Agent，四个词天天混着用。其实只差一个问题：<b>下一步谁说了算</b>。这一页用一张表和一把伞把分界划清。</p>
+    <div class="meta-row">
+      <span class="pill acc">6 分钟</span>
+      <span class="pill">零基础</span>
+      <span class="pill">含对照表</span>
+    </div>
+  </header>
+
+  <div class="whybox">
+    <div class="whybox-h">这一页在能力栈上的位置</div>
+    <div class="whybox-g">
+      <div class="wide"><b>对应环节</b><span>定义层 · 与相邻概念的分界</span></div>
+      <div><b>不学卡在哪</b><span>把所有「接了 API 的模型」都叫 Agent，于是估错了它的能力与风险。</span></div>
+      <div><b>它解决什么</b><span>给出可操作的判断标准，能一眼区分工作流与 Agent。</span></div>
+    </div>
+  </div>
+
+  <h2><span class="n">1</span>一张表分清四样东西</h2>
+  <div class="sec">
+    <p>这四个词天天被混着用，其实差在<b>「谁决定下一步」</b>这一个问题上：</p>    <div class="tw"><table class="tb">
+      <thead><tr><th style="width:20%"></th><th style="width:20%">你给什么</th><th style="width:30%">谁决定下一步</th><th style="width:30%">像什么</th></tr></thead>
+      <tbody>
+        <tr><td><b>大模型 / Copilot</b></td><td>指令（prompt）</td><td>你。它只负责把这一步答好</td><td>副驾驶：你握方向盘，它帮你看路</td></tr>
+        <tr><td><b>工作流 / 编排</b></td><td>流程图</td><td>图。每一步走哪条边是事先画死的</td><td>流水线：工件自己往前走</td></tr>
+        <tr><td><b>RPA</b></td><td>录制好的操作</td><td>录制时的那次操作</td><td>复读机：遇到没录过的界面就卡住</td></tr>
+        <tr><td><b>Agent</b></td><td>目标</td><td>它自己。边走边判断，走错了回头</td><td>主驾驶：目的地说了，路线它定</td></tr>
+      </tbody>
+    </table></div>    <p>RPA 最容易被误当成 Agent。区别不在「自动化」——两者都自动——而在<b>面对没预设过的信息时还能不能判断</b>。RPA 的流程里没有「如果弹窗长得不一样怎么办」这一支，Agent 有。</p>
+  </div>
+
+  <h2><span class="n">2</span>一个日常例子：明天去成都要不要带伞</h2>
+  <div class="sec">
+    <div class="def">
+      <div class="def-h">只有聊天<span class="loc">输出文字</span></div>
+      <p>它只能凭训练时记住的气候常识猜一句：「成都雨水多，建议带伞。」</p><p>听着有道理，但它其实不知道明天的天气。它没查，也没法查。</p>
+    </div>    <div class="def">
+      <div class="def-h">有 Agent<span class="loc">输出动作 → 拿回结果 → 再输出结论</span></div>
+      <p>它先去查天气预报，看到「明天小雨、12 度」，再回来告诉你——而且说得出自己是查的、查的是哪个源。</p><p>差别不在它更聪明。差别在有人给了它一双手。</p>
+    </div>    <p>这个差别看着小，但它决定了后面所有工程问题的来源：有了手，就要处理手会抓空、会抓错、会把东西打翻。</p>
+  </div>
+
+  <h2><span class="n">3</span>会聊天，不等于会干活</h2>
+  <div class="sec">
+    <p>先立一个判断标准：<b>能陪你聊天的，不一定叫 Agent；能自己想办法把事办完的，才是。</b></p>    <p>按这个标准回头看市面上的产品，会发现一个现象：很多自称 Agent 的东西，其实是一条写死的工作流，只是中间插了一次模型调用。它不是不能干活，是<b>不会在计划外的事上做决定</b>。</p>    <div class="note"><p>判断方法：给它一个你没预设过的意外（接口报错、数据缺一列、用户改需求），看它是绕过去继续、还是整条停住。停住的，就是工作流。</p></div>
+  </div>
+
+  <div class="summary">
+    <h3>本页要点</h3>
+    <ol>
+      <li>四样东西的分界只有一条：谁决定下一步。</li>
+      <li>RPA 与 Agent 的区别不在自动化，而在遇到没预设的信息时还能不能判断。</li>
+      <li>很多自称 Agent 的产品其实是插了模型调用的工作流，测它一个意外就能看出来。</li>
+    </ol>
+  </div>
+
+  <h2><span class="n">★</span>自测</h2>
+  <div class="quiz">
+    <div class="qz">
+      <div class="q"><i>Q1</i>按本页的标准，下面哪个最可能不是 Agent？</div>
+      <div class="opts">
+        <button class="opt"><i>A</i><span>给目标后自己决定查哪些资料、写完后自检再交的助手</span></button>
+        <button class="opt" data-ok="1"><i>B</i><span>按固定步骤：读表 → 调模型改写 → 校验 → 输出，任一步失败就整条停下重跑的系统</span></button>
+        <button class="opt"><i>C</i><span>出错后会换个工具再试的助手</span></button>
+        <button class="opt"><i>D</i><span>跑到第 8 轮发现自己绕圈、主动换思路的助手</span></button>
+      </div>
+      <div class="ex">失败后只能整条重跑，说明「下一步做什么」没有交给它判断。这是工作流，不是 Agent。</div>
+    </div>
+    <div class="qz">
+      <div class="q"><i>Q2</i>RPA 和 Agent 最关键的区别是什么？</div>
+      <div class="opts">
+        <button class="opt"><i>A</i><span>谁更便宜</span></button>
+        <button class="opt" data-ok="1"><i>B</i><span>面对未预设的情况时能否判断并继续</span></button>
+        <button class="opt"><i>C</i><span>谁用到的模型更大</span></button>
+        <button class="opt"><i>D</i><span>谁能处理更多数据</span></button>
+      </div>
+      <div class="ex">两者都是自动化。分水岭在「没录过的那一步」出现时，是卡住还是自己想办法。</div>
+    </div>
+  </div>
+  <div class="cite">
+    <b>资料出处</b>
+    Russell & Norvig 对「理性智能体」的定义；RPA 与 Agent 的边界讨论。
+  </div>
+
+  <div id="termIndex"></div>
+</main>
+<script src="assets/course.js?v=20261107b"></script>
+</body>
+</html>

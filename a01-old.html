@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-page="old">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Agent 这个词，比大模型老三十多年 · Agent 学习空间</title>
+<meta name="description" content="它先是哲学概念，1986 年被搬进计算机，然后等了三十多年才等到能用的底座。这一页把时间线捋直，顺便说清为什么 2023 年突然又热了。">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Ccircle cx='16' cy='16' r='15' fill='%23F6F2EC'/%3E%3Ccircle cx='16' cy='9' r='3.2' fill='none' stroke='%23B8462A' stroke-width='2'/%3E%3Ccircle cx='9' cy='21' r='3.2' fill='none' stroke='%23B8462A' stroke-width='2'/%3E%3Ccircle cx='23' cy='21' r='3.2' fill='none' stroke='%23B8462A' stroke-width='2'/%3E%3Cpath d='M14.2 11.4L10.4 18.2M17.8 11.4l3.8 6.8M12.2 21h7.6' stroke='%23B8462A' stroke-width='1.6' fill='none'/%3E%3C/svg%3E">
+<link rel="stylesheet" href="assets/style.css?v=20261107b">
+</head>
+<body>
+<main class="doc" id="doc">
+
+  <header class="lesson-head">
+    <div class="kicker"><span class="sec-no">0.1</span><span>第零幕 · 它到底是什么</span><span>·</span><span>WHERE THE WORD CAME FROM</span></div>
+    <h1>Agent 这个词，比大模型老三十多年</h1>
+    <p class="lede">它先是哲学概念，1986 年被搬进计算机，然后等了三十多年才等到能用的底座。这一页把时间线捋直，顺便说清为什么 2023 年突然又热了。</p>
+    <div class="meta-row">
+      <span class="pill acc">5 分钟</span>
+      <span class="pill">零基础</span>
+      <span class="pill">含 1 张时间线</span>
+    </div>
+  </header>
+
+  <div class="whybox">
+    <div class="whybox-h">这一页在能力栈上的位置</div>
+    <div class="whybox-g">
+      <div class="wide"><b>对应环节</b><span>定义层 · 词的来历</span></div>
+      <div><b>不学卡在哪</b><span>以为 Agent 是 ChatGPT 的衍生物，于是把它的能力上限理解成「模型更强」。</span></div>
+      <div><b>它解决什么</b><span>把概念和实现分开：结构一直是那个结构，变的只是中间那一环由谁来做。</span></div>
+    </div>
+  </div>
+
+  <h2><span class="n">1</span>这个词比「人工智能」还老</h2>
+  <div class="sec">
+    <p>很多人第一次听到 Agent，会以为它是 ChatGPT 之后才有的新词。其实正相反——这个词在人工智能之前就存在了，而且比大模型早了三十多年。</p>    <p>哲学里的「行动者」（agent）指的是有能力自己发起行动的主体：它想要什么、相信什么、打算做什么，然后真的去做。亚里士多德和休谟都讨论过这个意思。关键在<b>「自主」</b>二字——不是被外部刺激推着动，而是自己决定动。</p>    <p>1986 年，Minsky 在《思维的社会》里把这个词搬进计算机领域：智能不是一个大程序，而是许多简单个体协商出来的结果，这些个体就叫 Agent。整个 80 年代后期开始，AI 界干脆把「设计表现出智能行为的 Agent」当成学科定义本身。</p>    <div class="note"><p>所以「Agent」在学术上从来不是新东西。新的是：2023 年前后，终于有一个东西能胜任「决策」这一环了。</p></div>
+  </div>
+
+  <h2><span class="n">2</span>为什么当年只能停在论文里</h2>
+  <div class="sec">
+    <p>80 年代的 Agent 有完整的理论、有清晰的架构图，就是跑不起来。三样东西缺一不可：</p>    <div class="tw"><table class="tb">
+      <thead><tr><th style="width:26%">缺的东西</th><th style="width:40%">当年什么状况</th><th style="width:34%">大模型带来了什么</th></tr></thead>
+      <tbody>
+        <tr><td><b>能理解自然语言的脑子</b></td><td>只能处理结构化输入，人得先把世界翻译成符号</td><td>直接用自然语言描述目标和环境</td></tr>
+        <tr><td><b>算力</b></td><td>跑一个专家系统要专门机房</td><td>一次推理几秒钟，按次计费</td></tr>
+        <tr><td><b>常识</b></td><td>规则库要人一条条写，写不完</td><td>训练时从海量文本里带出来了</td></tr>
+      </tbody>
+    </table></div>    <p>结果就是：<b>大脑终于有了，剩下的手脚才开始被补上。</b>这也解释了为什么 2022 年之后这个老词突然又热了——不是概念突破，是缺的那块零件到货了。</p>
+  </div>
+
+  <h2><span class="n">3</span>一条时间线</h2>
+  <div class="sec">
+    <div class="flow"><div class="fn"><b>1986</b>Minsky 提出「心智社会」</div><div class="fa">→</div><div class="fn"><b>1990s</b>Agent 成为 AI 教科书的核心定义</div><div class="fa">→</div><div class="fn"><b>2022</b>CoT / ReAct 让模型会想会做</div><div class="fa">→</div><div class="fn"><b>2023</b>记忆、反思、多智能体集中爆发</div></div>    <p>注意中间那三十年是空的：不是没人研究，是没有能落地的底座。所有架构图都在等一个够用的语言模型。</p>
+  </div>
+
+  <div class="summary">
+    <h3>本页要点</h3>
+    <ol>
+      <li>Agent 是哲学词，1986 年被 Minsky 搬进计算机，比大模型早三十多年。</li>
+      <li>它当年跑不起来，缺的是语言理解、算力和常识三样。</li>
+      <li>2023 年的爆发不是概念突破，是「决策」这一环终于有了能胜任的零件。</li>
+    </ol>
+  </div>
+
+  <h2><span class="n">★</span>自测</h2>
+  <div class="quiz">
+    <div class="qz">
+      <div class="q"><i>Q1</i>「Agent 这个词比大模型老」这个说法，准确的含义是？</div>
+      <div class="opts">
+        <button class="opt"><i>A</i><span>大模型是 Agent 的一种实现，所以更晚</span></button>
+        <button class="opt" data-ok="1"><i>B</i><span>「能感知、能决策、能行动的主体」这个概念早在 1986 年就进了计算机领域，只是当年没有能胜任决策的底座</span></button>
+        <button class="opt"><i>C</i><span>OpenAI 抄了 80 年代的论文</span></button>
+        <button class="opt"><i>D</i><span>大模型的参数量比当年的 Agent 大</span></button>
+      </div>
+      <div class="ex">概念早就成立，缺的是零件。这也是理解整门课的前提：Agent 的结构一直没变，变的是中间那个「决策」由谁来做。</div>
+    </div>
+    <div class="qz">
+      <div class="q"><i>Q2</i>80 年代的 Agent 为什么落不了地？</div>
+      <div class="opts">
+        <button class="opt"><i>A</i><span>理论不完整</span></button>
+        <button class="opt" data-ok="1"><i>B</i><span>缺语言理解、算力、常识三样底座</span></button>
+        <button class="opt"><i>C</i><span>没有编程语言</span></button>
+        <button class="opt"><i>D</i><span>当时没人研究</span></button>
+      </div>
+      <div class="ex">理论是完整的，架构图画得很清楚。缺的是让它跑起来的现实条件。</div>
+    </div>
+  </div>
+  <div class="cite">
+    <b>资料出处</b>
+    Minsky《The Society of Mind》(1986)；Russell & Norvig《人工智能：一种现代方法》历史章节。
+  </div>
+
+  <div id="termIndex"></div>
+</main>
+<script src="assets/course.js?v=20261107b"></script>
+</body>
+</html>

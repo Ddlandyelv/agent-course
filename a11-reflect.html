@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-page="reflect">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>让失败变成经验 · Agent 学习空间</title>
+<meta name="description" content="错了不会改，是 Agent 最难缠的毛病。这一页讲两条修法：写完自己批，和把失败写成复盘带到下一轮——以及它们共同的命门。">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Ccircle cx='16' cy='16' r='15' fill='%23F6F2EC'/%3E%3Ccircle cx='16' cy='9' r='3.2' fill='none' stroke='%23B8462A' stroke-width='2'/%3E%3Ccircle cx='9' cy='21' r='3.2' fill='none' stroke='%23B8462A' stroke-width='2'/%3E%3Ccircle cx='23' cy='21' r='3.2' fill='none' stroke='%23B8462A' stroke-width='2'/%3E%3Cpath d='M14.2 11.4L10.4 18.2M17.8 11.4l3.8 6.8M12.2 21h7.6' stroke='%23B8462A' stroke-width='1.6' fill='none'/%3E%3C/svg%3E">
+<link rel="stylesheet" href="assets/style.css?v=20261107b">
+</head>
+<body>
+<main class="doc" id="doc">
+
+  <header class="lesson-head">
+    <div class="kicker"><span class="sec-no">07</span><span>第二部分 · 从会说话到会动手</span><span>·</span><span>SELF-REFINE & REFLEXION</span></div>
+    <h1>让失败变成经验</h1>
+    <p class="lede">错了不会改，是 Agent 最难缠的毛病。这一页讲两条修法：写完自己批，和把失败写成复盘带到下一轮——以及它们共同的命门。</p>
+    <div class="meta-row">
+      <span class="pill acc">10 分钟</span>
+      <span class="pill">含论文数字</span>
+      <span class="pill">两条修法</span>
+    </div>
+  </header>
+
+  <div class="whybox">
+    <div class="whybox-h">这一页在能力栈上的位置</div>
+    <div class="whybox-g">
+      <div class="wide"><b>对应环节</b><span>能力层 · 自我修正</span></div>
+      <div><b>不学卡在哪</b><span>同一类错误反复出现，改了提示也没用，因为系统里没有「上次错在哪」这一项。</span></div>
+      <div><b>它解决什么</b><span>把失败固化成可复用的文字经验，让第二次尝试真的不一样。</span></div>
+    </div>
+  </div>
+
+  <h2><span class="n">1</span>缺什么：错了不自知</h2>
+  <div class="sec">
+    <p>ReAct 跑完一轮就结束了，错了也白错。下一轮重来，还是同样的错——因为它根本不记得上次为什么错。</p>    <p>2023 年上半年有两篇论文在补这个洞，思路不同：一篇让它<b>写完自己批</b>，一篇让它<b>把失败写成复盘带进下一轮</b>。</p>
+  </div>
+
+  <h2><span class="n">2</span>Self-Refine：写完不要直接交</h2>
+  <div class="sec">
+    <p>同一个模型演三个角色：先当生成者写初稿，再当批评者挑具体毛病，最后当修改者照意见改。循环几轮，不改任何权重，全靠提示。</p>    <div class="flow"><div class="fn"><b>生成</b>写初稿</div><div class="fa">→</div><div class="fn"><b>批评</b>挑具体问题</div><div class="fa">→</div><div class="fn"><b>修改</b>照意见改</div><div class="fa">→</div><div class="fn"><b>再来一轮</b>直到没问题</div></div>    <p>7 个任务上平均提升约 <b>20 个百分点</b>；人类评估明显更偏好改过之后的版本。</p>    <p>局限：<b>自己评自己，评不出自己没意识到的错。</b>没有外部信号时，会越改越偏还自我感觉良好。</p>
+  </div>
+
+  <h2><span class="n">3</span>Reflexion：把失败写成一段话</h2>
+  <div class="sec">
+    <p>沿用 ReAct 的循环，但每次行动后算一个分数，判断这次是不是白走了；命中就终止、重置环境，并把这次的失败写成一段复盘带进下一轮。</p>    <div class="flow"><div class="fn"><b>Actor</b>干活</div><div class="fa">→</div><div class="fn"><b>Evaluator</b>判分</div><div class="fa">→</div><div class="fn"><b>Self-Reflect</b>写复盘</div><div class="fa">→</div><div class="fn"><b>Memory</b>存起来 → 下轮先读</div></div>    <div class="tw"><table class="tb">
+      <thead><tr><th style="width:40%">关键数字</th><th style="width:60%">值</th></tr></thead>
+      <tbody>
+        <tr><td>HumanEval pass@1</td><td><b>91%</b>（同期 GPT-4 基线约 80%）</td></tr>
+        <tr><td>ALFWorld</td><td>134 个任务完成 <b>130</b> 个</td></tr>
+        <tr><td>复盘条数</td><td>1–3 条就够，多了挤占上下文</td></tr>
+      </tbody>
+    </table></div>    <p>作者把它叫「语言强化学习」——梯度换成了文字。</p>    <p>它的命门是<b>评估器</b>。有单元测试这种硬信号才靠谱；靠模型自评，就会变成自我安慰——MBPP 上它就输给了基线。</p>
+  </div>
+
+  <h2><span class="n">4</span>两者怎么配合用</h2>
+  <div class="sec">
+    <div class="tw"><table class="tb">
+      <thead><tr><th style="width:20%"></th><th style="width:26%">管什么</th><th style="width:26%">信号从哪来</th><th style="width:28%">什么时候用</th></tr></thead>
+      <tbody>
+        <tr><td><b>Self-Refine</b></td><td>一次产出内部的自我修正</td><td>模型自己的批评（弱信号）</td><td>写作、改写、格式整理</td></tr>
+        <tr><td><b>Reflexion</b></td><td>跨轮次的经验积累</td><td>外部判分（测试、校验、人工）</td><td>解题、编码、可重试的任务</td></tr>
+      </tbody>
+    </table></div>    <div class="note"><p>一定要配外部校验。只靠模型自评的反思，容易出现「越改越偏还很有信心」。跑测试、查数据、人工抽检——任何一种外部信号都比自评强。</p></div>    <p>今天的对应：Agent 的「错题本」。这也是最实用的一类长期记忆——比存全部对话记录有用得多。</p>
+  </div>
+
+  <div class="summary">
+    <h3>本页要点</h3>
+    <ol>
+      <li>Self-Refine：生成 → 批评 → 修改，7 个任务平均提升约 20 个百分点。</li>
+      <li>Reflexion：Actor 干活、Evaluator 判分、Self-Reflect 写复盘，HumanEval 91% pass@1。</li>
+      <li>两者的命门都是评估器：没有硬信号，反思会退化成自我安慰。</li>
+      <li>复盘 1–3 条就够，多了会挤占上下文。</li>
+    </ol>
+  </div>
+
+  <h2><span class="n">★</span>自测</h2>
+  <div class="quiz">
+    <div class="qz">
+      <div class="q"><i>Q1</i>Reflexion 在 MBPP 上为什么输给基线？</div>
+      <div class="opts">
+        <button class="opt"><i>A</i><span>模型太小</span></button>
+        <button class="opt" data-ok="1"><i>B</i><span>没有可靠的评估器，自我批评变成自我安慰</span></button>
+        <button class="opt"><i>C</i><span>复盘条数太多</span></button>
+        <button class="opt"><i>D</i><span>任务太简单</span></button>
+      </div>
+      <div class="ex">有单元测试的 HumanEval 上它很强，没有硬信号的 MBPP 上就失效。评估器的质量决定了这套方法的上限。</div>
+    </div>
+    <div class="qz">
+      <div class="q"><i>Q2</i>「语言强化学习」这个说法指的是什么？</div>
+      <div class="opts">
+        <button class="opt"><i>A</i><span>用自然语言训练模型权重</span></button>
+        <button class="opt" data-ok="1"><i>B</i><span>把本该用梯度更新的经验，换成一段文字存进记忆，下次读一遍</span></button>
+        <button class="opt"><i>C</i><span>用语言模型做强化学习环境</span></button>
+        <button class="opt"><i>D</i><span>多语言训练</span></button>
+      </div>
+      <div class="ex">权重一个都没改，改变的是「下一轮的提示里多了什么」。</div>
+    </div>
+  </div>
+  <div class="cite">
+    <b>资料出处</b>
+    Madaan et al.《Self-Refine》(arXiv:2303.17651)；Shinn et al.《Reflexion》(arXiv:2303.11366)。
+  </div>
+
+  <div id="termIndex"></div>
+</main>
+<script src="assets/course.js?v=20261107b"></script>
+</body>
+</html>

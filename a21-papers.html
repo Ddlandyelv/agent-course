@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-page="papers">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>十三篇，按问题索引 · Agent 学习空间</title>
+<meta name="description" content="它们不是随便挑的，是一层层往上堆的。这一页把它们按「你手上的毛病」重新排了一遍——查表比通读有用。">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Ccircle cx='16' cy='16' r='15' fill='%23F6F2EC'/%3E%3Ccircle cx='16' cy='9' r='3.2' fill='none' stroke='%23B8462A' stroke-width='2'/%3E%3Ccircle cx='9' cy='21' r='3.2' fill='none' stroke='%23B8462A' stroke-width='2'/%3E%3Ccircle cx='23' cy='21' r='3.2' fill='none' stroke='%23B8462A' stroke-width='2'/%3E%3Cpath d='M14.2 11.4L10.4 18.2M17.8 11.4l3.8 6.8M12.2 21h7.6' stroke='%23B8462A' stroke-width='1.6' fill='none'/%3E%3C/svg%3E">
+<link rel="stylesheet" href="assets/style.css?v=20261107b">
+</head>
+<body>
+<main class="doc" id="doc">
+
+  <header class="lesson-head">
+    <div class="kicker"><span class="sec-no">A</span><span>第五部分 · 论文地图</span><span>·</span><span>PAPER MAP</span></div>
+    <h1>十三篇，按问题索引</h1>
+    <p class="lede">它们不是随便挑的，是一层层往上堆的。这一页把它们按「你手上的毛病」重新排了一遍——查表比通读有用。</p>
+    <div class="meta-row">
+      <span class="pill acc">12 分钟</span>
+      <span class="pill">13 篇 · 4 组</span>
+      <span class="pill">含关键数字</span>
+    </div>
+  </header>
+
+  <div class="whybox">
+    <div class="whybox-h">这一页在能力栈上的位置</div>
+    <div class="whybox-g">
+      <div class="wide"><b>对应环节</b><span>索引层 · 论文对照</span></div>
+      <div><b>不学卡在哪</b><span>知道有这些论文，但不知道自己该读哪篇，或者读完了串不起来。</span></div>
+      <div><b>它解决什么</b><span>把论文从「时间序列」重排成「问题索引」，随用随查。</span></div>
+    </div>
+  </div>
+
+  <h2><span class="n">1</span>一张表：谁管什么</h2>
+  <div class="sec">
+    <p>十三篇的名字容易混。其实它们各自只回答一个问题，对上号就不乱了：</p>    <div class="tw"><table class="tb">
+      <thead><tr><th style="width:18%">它回答的问题</th><th style="width:26%">论文</th><th style="width:56%">一句话</th></tr></thead>
+      <tbody>
+        <tr><td><b>能算对吗</b></td><td>CoT</td><td>把步骤写出来再答</td></tr>
+        <tr><td></td><td>Self-Consistency</td><td>多算几遍，答案投票</td></tr>
+        <tr><td><b>能动手吗</b></td><td>ReAct</td><td>想 → 做 → 看，循环</td></tr>
+        <tr><td></td><td>Toolformer</td><td>自己学会何时调工具</td></tr>
+        <tr><td><b>能变好吗</b></td><td>Self-Refine</td><td>写完自己批一遍</td></tr>
+        <tr><td></td><td>Reflexion</td><td>失败写成复盘，下轮带上</td></tr>
+        <tr><td></td><td>Voyager</td><td>把做成功的动作写成代码存起来</td></tr>
+        <tr><td><b>能记住吗</b></td><td>Generative Agents</td><td>记忆流 + 检索 + 反思</td></tr>
+        <tr><td></td><td>MemGPT</td><td>上下文当内存来管</td></tr>
+        <tr><td><b>能选对路吗</b></td><td>Tree of Thoughts</td><td>多条路并行，剪掉差的</td></tr>
+        <tr><td></td><td>LATS</td><td>搜索 + 环境反馈 + 反思</td></tr>
+        <tr><td><b>靠不靠得住</b></td><td>AgentBench</td><td>统一考卷，看能不能做完</td></tr>
+        <tr><td></td><td>综述（四模块）</td><td>给所有系统一把尺子</td></tr>
+      </tbody>
+    </table></div>
+  </div>
+
+  <h2><span class="n">2</span>第一组：让模型把想法写出来</h2>
+  <div class="sec">
+    <p><b>2022 上半年 · 解决「它能算对吗」</b></p>    <div class="tw"><table class="tb">
+      <thead><tr><th style="width:30%">论文</th><th style="width:28%">关键做法</th><th style="width:20%">关键数字</th><th style="width:22%">局限</th></tr></thead>
+      <tbody>
+        <tr><td><b>CoT</b><br><span style="font-size:12px">2201.11903 · NeurIPS 2022</span></td><td>示例的答案改写成推导过程，模型照着学</td><td>GSM8K PaLM 540B：17.9% → <b>56.9%</b></td><td>只够大的模型使，100B 以下基本无收益</td></tr>
+        <tr><td><b>Self-Consistency</b><br><span style="font-size:12px">2203.11171 · ICLR 2023</span></td><td>采样多条推理路径，答案投票（不是挑最好）</td><td>GSM8K 再提到 <b>74.4%</b></td><td>成本 ×N；只能用在可投票的任务</td></tr>
+      </tbody>
+    </table></div>
+  </div>
+
+  <h2><span class="n">3</span>第二组：从「会想」到「会做」</h2>
+  <div class="sec">
+    <p><b>2022 下半年 – 2023 初 · 解决「它能不能真的动手」</b></p>    <div class="tw"><table class="tb">
+      <thead><tr><th style="width:30%">论文</th><th style="width:32%">关键做法</th><th style="width:20%">关键数字</th><th style="width:18%">局限</th></tr></thead>
+      <tbody>
+        <tr><td><b>ReAct</b><br><span style="font-size:12px">2210.03629 · ICLR 2023 Oral</span></td><td>Thought → Action → Observation 三步轮流，观察会当场推翻错判</td><td>ALFWorld <b>+34%</b>、WebShop +10%</td><td>轮数不可控，长任务容易绕圈</td></tr>
+        <tr><td><b>Toolformer</b><br><span style="font-size:12px">2302.04761 · NeurIPS 2023</span></td><td>自己生成候选 API 调用，用「调用后是否更会预测」当信号自我微调</td><td>少量示例自监督，多种任务超过同规模 GPT-3</td><td>只学得会有明确数值收益的调用</td></tr>
+      </tbody>
+    </table></div>
+  </div>
+
+  <h2><span class="n">4</span>第三组：会反思、会记事、会攒技能</h2>
+  <div class="sec">
+    <p><b>2023 上半年 · 解决「它能不能越干越好」</b></p>    <div class="tw"><table class="tb">
+      <thead><tr><th style="width:28%">论文</th><th style="width:34%">关键做法</th><th style="width:20%">关键数字</th><th style="width:18%">局限</th></tr></thead>
+      <tbody>
+        <tr><td><b>Self-Refine</b><br><span style="font-size:12px">2303.17651 · NeurIPS 2023</span></td><td>一个模型演生成者 / 批评者 / 修改者，循环几轮不改权重</td><td>7 个任务平均 <b>+20 个百分点</b></td><td>自评评不出自己没意识到的错</td></tr>
+        <tr><td><b>Reflexion</b><br><span style="font-size:12px">2303.11366 · NeurIPS 2023</span></td><td>Actor 干活、Evaluator 打分、Self-Reflect 写复盘，存进情景记忆</td><td>HumanEval <b>91%</b> pass@1；ALFWorld 130/134</td><td>命门在评估器，自评会变成自我安慰</td></tr>
+        <tr><td><b>Generative Agents</b><br><span style="font-size:12px">2304.03442 · UIST 2023</span></td><td>记忆流 → 检索（新近度/重要性/相关性）→ 反思 → 计划</td><td>25 个角色两天，派对邀请自发扩散</td><td>每秒都在调模型，成本极高</td></tr>
+        <tr><td><b>Voyager</b><br><span style="font-size:12px">2305.16291 · 2023</span></td><td>自动课程 + 技能库（成功动作写成代码）+ 迭代提示</td><td>Minecraft 独特物品 <b>3.3×</b>，科技树 <b>15.3×</b></td><td>只在「代码即动作」的沙盒验证过</td></tr>
+        <tr><td><b>Tree of Thoughts</b><br><span style="font-size:12px">2305.10601 · NeurIPS 2023 Oral</span></td><td>每步生成多个候选、自评打分、剪枝、可回溯</td><td>Game of 24：4% → <b>74%</b></td><td>调用次数成倍上涨；需要评得准</td></tr>
+      </tbody>
+    </table></div>
+  </div>
+
+  <h2><span class="n">5</span>第四组：走向生产</h2>
+  <div class="sec">
+    <p><b>2023 下半年 · 解决「它到底靠不靠得住」</b></p>    <div class="tw"><table class="tb">
+      <thead><tr><th style="width:28%">论文</th><th style="width:34%">关键做法</th><th style="width:20%">关键数字</th><th style="width:18%">局限</th></tr></thead>
+      <tbody>
+        <tr><td><b>AgentBench</b><br><span style="font-size:12px">2308.03688 · ICLR 2024</span></td><td>8 个环境统一考卷，只看任务做没做完</td><td>评了 25 个模型，多数开源模型接近做不了</td><td>环境会随模型变强而过时</td></tr>
+        <tr><td><b>综述（四模块）</b><br><span style="font-size:12px">2308.11432 · 2023</span></td><td>拆成 Profile / Memory / Planning / Action 四格</td><td>不是实验论文，价值在分类法</td><td>多智能体与 RL 自我进化讲得薄</td></tr>
+        <tr><td><b>LATS</b><br><span style="font-size:12px">2310.04406 · ICML 2024</span></td><td>蒙特卡洛树搜索 + 环境反馈 + 反思</td><td>HumanEval <b>&gt;90%</b>；HotPotQA 约为 ReAct 两倍</td><td>贵，延迟不适合交互式产品</td></tr>
+        <tr><td><b>MemGPT</b><br><span style="font-size:12px">2310.08560 · 2023</span></td><td>上下文当内存、外部存储当硬盘，模型自己换入换出</td><td>有限窗口完成需超大上下文的活</td><td>多一层管理调用；搬错会丢关键信息</td></tr>
+      </tbody>
+    </table></div>
+  </div>
+
+  <h2><span class="n">6</span>怎么读：顺着「问题」读，不顺着年份读</h2>
+  <div class="sec">
+    <p><b>别顺着读，要顺着「问题」读。</b>先想清楚你手上的 Agent 现在卡在哪：</p>    <div class="tw"><table class="tb">
+      <thead><tr><th style="width:40%">你现在的毛病</th><th style="width:60%">直接跳哪一篇</th></tr></thead>
+      <tbody>
+        <tr><td>算不对、多步就崩</td><td>CoT → Self-Consistency</td></tr>
+        <tr><td>张口就编，不去查</td><td>ReAct → Toolformer</td></tr>
+        <tr><td>改完不见好，凭感觉调</td><td>Self-Refine → Reflexion</td></tr>
+        <tr><td>长任务做到一半忘了前面</td><td>Generative Agents → MemGPT</td></tr>
+        <tr><td>复杂题一次想错就整条废</td><td>Tree of Thoughts → LATS</td></tr>
+        <tr><td>说不清自己的 Agent 弱在哪</td><td>AgentBench → 四模块综述</td></tr>
+      </tbody>
+    </table></div>    <div class="note"><p>十三篇一次读完没有意义。带着一个具体的毛病去读，一篇就够用。每篇的「方法」一节通常只有两三页，比任何二手总结都短。</p></div>
+  </div>
+
+  <div class="summary">
+    <h3>本页要点</h3>
+    <ol>
+      <li>十三篇各回答一个问题：能算对吗、能动手吗、能变好吗、能记住吗、能选对路吗、靠不靠得住。</li>
+      <li>四组递进：写出来 → 动起来 → 越干越好 → 走向生产。</li>
+      <li>读法是顺问题读，不是顺年份读。</li>
+      <li>每篇都给 arXiv 编号，直接搜编号就能下原文。</li>
+    </ol>
+  </div>
+
+  <h2><span class="n">★</span>自测</h2>
+  <div class="quiz">
+    <div class="qz">
+      <div class="q"><i>Q1</i>手上 Agent 的问题是「长任务做到一半就忘了前面的约束」，先读哪两篇？</div>
+      <div class="opts">
+        <button class="opt"><i>A</i><span>CoT 与 Self-Consistency</span></button>
+        <button class="opt" data-ok="1"><i>B</i><span>Generative Agents 与 MemGPT</span></button>
+        <button class="opt"><i>C</i><span>ToT 与 LATS</span></button>
+        <button class="opt"><i>D</i><span>AgentBench 与综述</span></button>
+      </div>
+      <div class="ex">这两篇讲的就是记忆：一个是记忆流 + 检索 + 反思，一个是把上下文当内存来管。</div>
+    </div>
+    <div class="qz">
+      <div class="q"><i>Q2</i>为什么说要顺问题读、不要顺年份读？</div>
+      <div class="opts">
+        <button class="opt"><i>A</i><span>因为论文太旧</span></button>
+        <button class="opt" data-ok="1"><i>B</i><span>因为带着具体毛病去读，一篇就够用；通读则记不住也用不上</span></button>
+        <button class="opt"><i>C</i><span>因为后面的论文更好</span></button>
+        <button class="opt"><i>D</i><span>因为年份不可靠</span></button>
+      </div>
+      <div class="ex">这十三篇是一条链而不是十三个点子，但只有当你手上有对应的洞时，这条链才对你有意义。</div>
+    </div>
+  </div>
+  <div class="cite">
+    <b>资料出处</b>
+    CoT (2201.11903)、Self-Consistency (2203.11171)、ReAct (2210.03629)、Toolformer (2302.04761)、Self-Refine (2303.17651)、Reflexion (2303.11366)、Generative Agents (2304.03442)、Voyager (2305.16291)、ToT (2305.10601)、AgentBench (2308.03688)、综述 (2308.11432)、LATS (2310.04406)、MemGPT (2310.08560)。
+  </div>
+
+  <div id="termIndex"></div>
+</main>
+<script src="assets/course.js?v=20261107b"></script>
+</body>
+</html>

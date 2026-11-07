@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-page="def">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>两个定义，一个分水岭 · Agent 学习空间</title>
+<meta name="description" content="一个来自教科书，讲结构；一个来自工程界，讲零件。把它们叠在一起，就能看清大模型到底改变了哪一环——<b>决策</b>。">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Ccircle cx='16' cy='16' r='15' fill='%23F6F2EC'/%3E%3Ccircle cx='16' cy='9' r='3.2' fill='none' stroke='%23B8462A' stroke-width='2'/%3E%3Ccircle cx='9' cy='21' r='3.2' fill='none' stroke='%23B8462A' stroke-width='2'/%3E%3Ccircle cx='23' cy='21' r='3.2' fill='none' stroke='%23B8462A' stroke-width='2'/%3E%3Cpath d='M14.2 11.4L10.4 18.2M17.8 11.4l3.8 6.8M12.2 21h7.6' stroke='%23B8462A' stroke-width='1.6' fill='none'/%3E%3C/svg%3E">
+<link rel="stylesheet" href="assets/style.css?v=20261107b">
+</head>
+<body>
+<main class="doc" id="doc">
+
+  <header class="lesson-head">
+    <div class="kicker"><span class="sec-no">0.4</span><span>第零幕 · 它到底是什么</span><span>·</span><span>TWO DEFINITIONS</span></div>
+    <h1>两个定义，一个分水岭</h1>
+    <p class="lede">一个来自教科书，讲结构；一个来自工程界，讲零件。把它们叠在一起，就能看清大模型到底改变了哪一环——<b>决策</b>。</p>
+    <div class="meta-row">
+      <span class="pill acc">8 分钟</span>
+      <span class="pill">需要读完 0.1–0.3</span>
+      <span class="pill">全课的地图页</span>
+    </div>
+  </header>
+
+  <div class="whybox">
+    <div class="whybox-h">这一页在能力栈上的位置</div>
+    <div class="whybox-g">
+      <div class="wide"><b>对应环节</b><span>定义层 · 全课的地图</span></div>
+      <div><b>不学卡在哪</b><span>记不住 Agent 到底由哪些部分组成，看新框架时无法定位它改了什么。</span></div>
+      <div><b>它解决什么</b><span>给出四件套拆法，后面每一页都能归到其中一格。</span></div>
+    </div>
+  </div>
+
+  <h2><span class="n">1</span>定义一：能感知、能行动的东西</h2>
+  <div class="sec">
+    <p>教科书里的定义来自 Russell 与 Norvig 的《人工智能：一种现代方法》：</p>    <div class="def">
+      <div class="def-h">「任何通过传感器（sensor）感知其环境（environment），并通过执行器（actuator）作用于该环境的事物，都可以被视为一个智能体。」<span class="loc">Russell & Norvig</span></div>
+      
+    </div>    <p>按这个定义，恒温器也是 Agent：温度计是传感器，开关是执行器，它维持室温。所以这个定义只规定<b>结构</b>，不规定智能——它说的是「有闭环」，不是「会思考」。</p>    <div class="flow"><div class="fn"><b>感知</b>从环境取信息</div><div class="fa">→</div><div class="fn"><b>决策</b>决定做什么</div><div class="fa">→</div><div class="fn"><b>行动</b>作用于环境</div></div>    <p>这个闭环里最关键、也最难的是中间那个「决策」。恒温器的决策是一行 if：温度低于 26 度就开。而真实的决策需要理解目标、拆解步骤、应对意外——这正是大模型之前做不到的部分。</p>
+  </div>
+
+  <h2><span class="n">2</span>定义二：四件套</h2>
+  <div class="sec">
+    <p>2023 年，Lilian Weng 给出了一个在工程界流传极广的公式：</p>    <pre class="code">Agent = LLM + memory + planning + tool use</pre>    <div class="tw"><table class="tb">
+      <thead><tr><th style="width:18%">部件</th><th style="width:44%">管什么</th><th style="width:38%">没有它会怎样</th></tr></thead>
+      <tbody>
+        <tr><td><b>LLM</b></td><td>理解、推理、组织语言</td><td>没有决策能力，只是一段脚本</td></tr>
+        <tr><td><b>memory</b></td><td>记住对话、记住做过什么</td><td>每轮从零开始，重复犯错</td></tr>
+        <tr><td><b>planning</b></td><td>拆任务、排顺序、判断先做哪步</td><td>遇到多步任务就卡住</td></tr>
+        <tr><td><b>tool use</b></td><td>查询、计算、调接口、改文件</td><td>只能说不能做</td></tr>
+      </tbody>
+    </table></div>    <p>这个公式的价值不在精确，而在<b>可拆解</b>：它把「智能体」这个模糊的词，拆成了四个可以分别实现、分别出错的工程模块。</p>
+  </div>
+
+  <h2><span class="n">3</span>分水岭：从执行器到思考者</h2>
+  <div class="sec">
+    <p>两个定义之间隔了二十年，中间的变化只有一句话：</p>    <div class="q"><b>决策那一环，从人写死的规则，变成了模型自己推理。</b></div>    <p>大模型给「决策」这一环带来了四样传统算法给不了的东西：</p>    <div class="tw"><table class="tb">
+      <thead><tr><th style="width:26%">带来了什么</th><th style="width:74%">具体表现</th></tr></thead>
+      <tbody>
+        <tr><td><b>推理与规划</b></td><td>能把「订一次旅行」拆成查预算、查天气、比价、改方案</td></tr>
+        <tr><td><b>自然语言即接口</b></td><td>不需要把世界翻译成符号，用户怎么说它就怎么理解</td></tr>
+        <tr><td><b>临场应变</b></td><td>接口报错能读错误信息，换个思路再来</td></tr>
+        <tr><td><b>自我解释</b></td><td>能说出自己为什么这么做，这让排错第一次成为可能</td></tr>
+      </tbody>
+    </table></div>    <p>而恒温器满足「能感知能行动」，不满足「自己决定下一步做什么，并且真的去做」。所以严格说：<b>恒温器是 Agent，但不是智能体</b>——两个词在中文里常被当成一个，这里按前一个定义用。</p>
+  </div>
+
+  <div class="summary">
+    <h3>本页要点</h3>
+    <ol>
+      <li>教科书定义只讲结构：感知 → 决策 → 行动，恒温器也算。</li>
+      <li>工程定义（Lilian Weng）讲零件：LLM + memory + planning + tool use。</li>
+      <li>分水岭在「决策」：从人写死的规则，变成模型自己推理。</li>
+      <li>后面所有章节都是在补四件套里的某一格。</li>
+    </ol>
+  </div>
+
+  <h2><span class="n">★</span>自测</h2>
+  <div class="quiz">
+    <div class="qz">
+      <div class="q"><i>Q1</i>按教科书定义，恒温器算不算 Agent？</div>
+      <div class="opts">
+        <button class="opt"><i>A</i><span>不算，它不会思考</span></button>
+        <button class="opt" data-ok="1"><i>B</i><span>算，它有感知—决策—行动的闭环，只是决策只有一行 if</span></button>
+        <button class="opt"><i>C</i><span>算，因为它用电</span></button>
+        <button class="opt"><i>D</i><span>要看型号</span></button>
+      </div>
+      <div class="ex">教科书定义只规定结构不规定智能。恒温器满足闭环，所以算；但它不具备「临场决策」，所以不是智能体。</div>
+    </div>
+    <div class="qz">
+      <div class="q"><i>Q2</i>Lilian Weng 那个公式的真正价值是什么？</div>
+      <div class="opts">
+        <button class="opt"><i>A</i><span>数学上严格</span></button>
+        <button class="opt" data-ok="1"><i>B</i><span>把模糊的「智能体」拆成四个可分别实现、分别出错的模块</span></button>
+        <button class="opt"><i>C</i><span>证明只有大模型能做 Agent</span></button>
+        <button class="opt"><i>D</i><span>给出了参数规模</span></button>
+      </div>
+      <div class="ex">它的价值在可拆解、可归因：出问题时你能说出是哪一格坏了，而不是笼统地说「Agent 不行」。</div>
+    </div>
+  </div>
+  <div class="cite">
+    <b>资料出处</b>
+    Russell & Norvig《人工智能：一种现代方法》第 2 章；Lilian Weng《LLM Powered Autonomous Agents》(2023)。
+  </div>
+
+  <div id="termIndex"></div>
+</main>
+<script src="assets/course.js?v=20261107b"></script>
+</body>
+</html>

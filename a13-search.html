@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-page="search">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>把一条线走成一张图 · Agent 学习空间</title>
+<meta name="description" content="第一步错了后面全废，是线性推理的死穴。这一页讲 ToT 怎么给推理装上搜索，以及 LATS 怎么把搜索、行动、反思合成一件事。">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Ccircle cx='16' cy='16' r='15' fill='%23F6F2EC'/%3E%3Ccircle cx='16' cy='9' r='3.2' fill='none' stroke='%23B8462A' stroke-width='2'/%3E%3Ccircle cx='9' cy='21' r='3.2' fill='none' stroke='%23B8462A' stroke-width='2'/%3E%3Ccircle cx='23' cy='21' r='3.2' fill='none' stroke='%23B8462A' stroke-width='2'/%3E%3Cpath d='M14.2 11.4L10.4 18.2M17.8 11.4l3.8 6.8M12.2 21h7.6' stroke='%23B8462A' stroke-width='1.6' fill='none'/%3E%3C/svg%3E">
+<link rel="stylesheet" href="assets/style.css?v=20261107b">
+</head>
+<body>
+<main class="doc" id="doc">
+
+  <header class="lesson-head">
+    <div class="kicker"><span class="sec-no">09</span><span>第二部分 · 从会说话到会动手</span><span>·</span><span>TREE OF THOUGHTS</span></div>
+    <h1>把一条线走成一张图</h1>
+    <p class="lede">第一步错了后面全废，是线性推理的死穴。这一页讲 ToT 怎么给推理装上搜索，以及 LATS 怎么把搜索、行动、反思合成一件事。</p>
+    <div class="meta-row">
+      <span class="pill acc">9 分钟</span>
+      <span class="pill">含 4%→74%</span>
+      <span class="pill">含代价对照</span>
+    </div>
+  </header>
+
+  <div class="whybox">
+    <div class="whybox-h">这一页在能力栈上的位置</div>
+    <div class="whybox-g">
+      <div class="wide"><b>对应环节</b><span>能力层 · 规划与搜索</span></div>
+      <div><b>不学卡在哪</b><span>遇到需要试错的任务，模型只走一条路，错了就整条重来。</span></div>
+      <div><b>它解决什么</b><span>用评估 + 剪枝 + 回溯换取更高的成功率，并明确这个代价该花在哪。</span></div>
+    </div>
+  </div>
+
+  <h2><span class="n">1</span>缺什么：一条路走到黑</h2>
+  <div class="sec">
+    <p>CoT 是一条线往前走。第一步错了后面全废，而且不能回头、不能试别的方案。</p>    <p>ToT 换了个做法：每一步不只生成一个想法，而是生成好几个，形成一棵树；再给每个节点打分，用 BFS 或 DFS 往下搜，差的枝直接剪掉。</p>    <div class="flow"><div class="fn"><b>生成多个候选</b>每步 3–5 个</div><div class="fa">→</div><div class="fn"><b>自评打分</b>确定 / 也许 / 走不通</div><div class="fa">→</div><div class="fn"><b>剪枝</b>砍掉走不通的</div><div class="fa">→</div><div class="fn"><b>回溯</b>不行就回上一层</div></div>
+  </div>
+
+  <h2><span class="n">2</span>ToT 的四个部件</h2>
+  <div class="sec">
+    <div class="tw"><table class="tb">
+      <thead><tr><th style="width:24%">部件</th><th style="width:44%">干什么</th><th style="width:32%">缺了会怎样</th></tr></thead>
+      <tbody>
+        <tr><td><b>思想分解</b></td><td>把问题拆成可评估的中间步</td><td>整棵树无从生长</td></tr>
+        <tr><td><b>想法生成器</b></td><td>每步产出多个候选</td><td>退化成 CoT</td></tr>
+        <tr><td><b>状态评估器</b></td><td>给候选打分，判断值不值得继续</td><td>搜了也白搜</td></tr>
+        <tr><td><b>搜索算法</b></td><td>BFS / DFS 决定探索顺序</td><td>预算不可控</td></tr>
+      </tbody>
+    </table></div>    <div class="def">
+      <div class="def-h">关键数字<span class="loc">arXiv:2305.10601 · NeurIPS 2023 Oral</span></div>
+      <p>Game of 24 ——CoT 只有 <b>4%</b>，ToT 做到 <b>74%</b>。同一个模型，同一道题。</p>
+    </div>
+  </div>
+
+  <h2><span class="n">3</span>LATS：把搜索、行动、反思合成一件事</h2>
+  <div class="sec">
+    <p>ReAct 只走一条路但不接搜索；ToT 会搜索却不接环境反馈。两个各缺一半。</p>    <p>2023 年 10 月的 LATS 把蒙特卡洛树搜索（AlphaGo 用的那套）搬到 Agent 上：</p>    <div class="flow"><div class="fn"><b>选择</b>挑最有希望的节点</div><div class="fa">→</div><div class="fn"><b>扩展</b>采样多个动作</div><div class="fa">→</div><div class="fn"><b>评估</b>模型给自己打分</div><div class="fa">→</div><div class="fn"><b>模拟</b>往下推演一段</div><div class="fa">→</div><div class="fn"><b>反向传播</b>把结果回传给上层</div></div>    <p>失败的整条轨迹写成反思，喂给后面的尝试。模型同时扮演决策者和裁判。</p>    <div class="tw"><table class="tb">
+      <thead><tr><th style="width:40%">关键数字</th><th style="width:60%">值</th></tr></thead>
+      <tbody>
+        <tr><td>HumanEval 一次通过率</td><td>超过 <b>90%</b>（GPT-4）</td></tr>
+        <tr><td>HotPotQA</td><td>GPT-3.5 上约为 ReAct 的 <b>两倍</b></td></tr>
+        <tr><td>WebShop 平均分</td><td><b>+22.1</b></td></tr>
+      </tbody>
+    </table></div>
+  </div>
+
+  <h2><span class="n">4</span>代价：它不适合聊天</h2>
+  <div class="sec">
+    <p>一个任务几十到上百次调用，延迟对交互式产品基本不可接受。适合跑批，不适合聊天。</p>    <div class="tw"><table class="tb">
+      <thead><tr><th style="width:16%"></th><th style="width:26%">调用次数</th><th style="width:58%">适合的场景</th></tr></thead>
+      <tbody>
+        <tr><td><b>CoT</b></td><td>1</td><td>任何需要多步推理的地方</td></tr>
+        <tr><td><b>ToT</b></td><td>10–100</td><td>解谜、规划、需要试错的题</td></tr>
+        <tr><td><b>LATS</b></td><td>几十到上百</td><td>跑批任务、编码、可自动判分的环境</td></tr>
+      </tbody>
+    </table></div>    <div class="note"><p>它适合「想清楚比省钱重要」的题。如果用户正在等回复，多花 100 倍时间换 10 个百分点通常不划算。</p></div>
+  </div>
+
+  <div class="summary">
+    <h3>本页要点</h3>
+    <ol>
+      <li>ToT 给推理装上搜索：多路生成、自评打分、剪枝、可回溯。</li>
+      <li>Game of 24 上 4% → 74%，同一个模型同一道题。</li>
+      <li>LATS 把搜索、环境反馈、反思合成一个框架，HumanEval 超 90%。</li>
+      <li>代价是调用次数成倍上涨，只适合跑批不适合聊天。</li>
+    </ol>
+  </div>
+
+  <h2><span class="n">★</span>自测</h2>
+  <div class="quiz">
+    <div class="qz">
+      <div class="q"><i>Q1</i>ToT 相比 CoT，多出来的核心能力是什么？</div>
+      <div class="opts">
+        <button class="opt"><i>A</i><span>更长的输出</span></button>
+        <button class="opt" data-ok="1"><i>B</i><span>每步生成多个候选、评估打分、剪枝并允许回溯</span></button>
+        <button class="opt"><i>C</i><span>更大的模型</span></button>
+        <button class="opt"><i>D</i><span>联网搜索</span></button>
+      </div>
+      <div class="ex">关键词是「搜索」：把线性的推理变成一棵可评估的树，所以能走回头路。</div>
+    </div>
+    <div class="qz">
+      <div class="q"><i>Q2</i>为什么 ToT 不适合聊天产品？</div>
+      <div class="opts">
+        <button class="opt"><i>A</i><span>因为它答得不准</span></button>
+        <button class="opt" data-ok="1"><i>B</i><span>因为调用次数是 CoT 的几十倍，延迟不可接受</span></button>
+        <button class="opt"><i>C</i><span>因为它不支持中文</span></button>
+        <button class="opt"><i>D</i><span>因为成本反而更低</span></button>
+      </div>
+      <div class="ex">这是纯粹的工程取舍：想清楚和省钱之间，聊天场景只能选后者。</div>
+    </div>
+  </div>
+  <div class="cite">
+    <b>资料出处</b>
+    Yao et al.《Tree of Thoughts》(arXiv:2305.10601)；Zhou et al.《LATS》(arXiv:2310.04406)。
+  </div>
+
+  <div id="termIndex"></div>
+</main>
+<script src="assets/course.js?v=20261107b"></script>
+</body>
+</html>

@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-page="collab">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>多角色协作的三种形态 · Agent 学习空间</title>
+<meta name="description" content="拆开之后，「他们怎么说话」要设计。这一页讲双人对话、群聊、层级三种形态，以及各家框架用不同隐喻表达的其实是同一件事。">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Ccircle cx='16' cy='16' r='15' fill='%23F6F2EC'/%3E%3Ccircle cx='16' cy='9' r='3.2' fill='none' stroke='%23B8462A' stroke-width='2'/%3E%3Ccircle cx='9' cy='21' r='3.2' fill='none' stroke='%23B8462A' stroke-width='2'/%3E%3Ccircle cx='23' cy='21' r='3.2' fill='none' stroke='%23B8462A' stroke-width='2'/%3E%3Cpath d='M14.2 11.4L10.4 18.2M17.8 11.4l3.8 6.8M12.2 21h7.6' stroke='%23B8462A' stroke-width='1.6' fill='none'/%3E%3C/svg%3E">
+<link rel="stylesheet" href="assets/style.css?v=20261107b">
+</head>
+<body>
+<main class="doc" id="doc">
+
+  <header class="lesson-head">
+    <div class="kicker"><span class="sec-no">12</span><span>第三部分 · 一个 Agent 不够用</span><span>·</span><span>COLLABORATION SHAPES</span></div>
+    <h1>多角色协作的三种形态</h1>
+    <p class="lede">拆开之后，「他们怎么说话」要设计。这一页讲双人对话、群聊、层级三种形态，以及各家框架用不同隐喻表达的其实是同一件事。</p>
+    <div class="meta-row">
+      <span class="pill acc">10 分钟</span>
+      <span class="pill">含 AutoGen</span>
+      <span class="pill">含框架对照</span>
+    </div>
+  </header>
+
+  <div class="whybox">
+    <div class="whybox-h">这一页在能力栈上的位置</div>
+    <div class="whybox-g">
+      <div class="wide"><b>对应环节</b><span>协作层 · 结构选择</span></div>
+      <div><b>不学卡在哪</b><span>一拆就上群聊，结果上下文膨胀、责任不清、成本失控。</span></div>
+      <div><b>它解决什么</b><span>按「要不要独立审核」「能不能并行」选形态，而不是按名气选。</span></div>
+    </div>
+  </div>
+
+  <h2><span class="n">1</span>任务复杂到单个撑不住，就有几种固定形态</h2>
+  <div class="sec">
+    <p>拆成多个角色之后，「他们怎么说话」是要设计的。以微软开源的 AutoGen 为例，它把协作方式归纳成几种固定形态：</p>    <div class="tw"><table class="tb">
+      <thead><tr><th style="width:18%">形态</th><th style="width:46%">结构</th><th style="width:36%">适合</th></tr></thead>
+      <tbody>
+        <tr><td><b>双人对话</b></td><td>两个 Agent 交替发言，一个提需求、一个执行</td><td>编码助手、审稿这类「一人做一人查」</td></tr>
+        <tr><td><b>群聊</b></td><td>多个 Agent 在同一个对话里，由调度者决定谁发言</td><td>头脑风暴、需要多视角讨论</td></tr>
+        <tr><td><b>层级</b></td><td>Manager 拆任务，Worker 各自执行，结果汇总回 Manager</td><td>任务可并行拆分，如「同时调研五个方向」</td></tr>
+      </tbody>
+    </table></div>    <div class="flow"><div class="fn"><b>Manager</b>拆任务</div><div class="fa">→</div><div class="fn"><b>Worker A</b>执行</div><div class="fa">→</div><div class="fn"><b>Worker B</b>执行</div><div class="fa">→</div><div class="fn"><b>汇总</b>回到 Manager</div></div>
+  </div>
+
+  <h2><span class="n">2</span>双人对话：最便宜的一种协作</h2>
+  <div class="sec">
+    <p>两个角色，一正一反。它之所以有效，是因为<b>「审」和「做」用了两套不同的上下文</b>——审核的人看不到执行者的思考过程，只能看结果。这恰好抵消了自查的盲区。</p>    <p>实现上最简单：两个 system prompt，轮流把对方的话当输入。不需要调度器，不需要共享状态。</p>    <div class="note"><p>如果你的需求是「产出物要有人挑错」，先试双人对话。它比群聊便宜一个数量级，效果常常更好。</p></div>
+  </div>
+
+  <h2><span class="n">3</span>群聊：谁说话是个问题</h2>
+  <div class="sec">
+    <p>多个角色在一个对话里，必须有个人决定「下一个谁发言」。常见三种调度：</p>    <div class="tw"><table class="tb">
+      <thead><tr><th style="width:22%">调度方式</th><th style="width:44%">怎么决定</th><th style="width:34%">风险</th></tr></thead>
+      <tbody>
+        <tr><td>轮流</td><td>按固定顺序转一圈</td><td>某个角色没事也要发言，浪费且跑题</td></tr>
+        <tr><td>模型选</td><td>让一个调度角色看当前状态，指定下一位</td><td>调度者自己也会误判</td></tr>
+        <tr><td>规则 + 模型</td><td>先按条件过滤候选，再让模型选</td><td>实现复杂，但最稳</td></tr>
+      </tbody>
+    </table></div>    <p>群聊最大的坑不是调度，是<b>上下文膨胀</b>：每个角色都要读全部历史，五轮之后每个角色的输入都变得又长又吵。</p>
+  </div>
+
+  <h2><span class="n">4</span>层级：像公司一样分工</h2>
+  <div class="sec">
+    <p>Manager 拆任务、Worker 执行、结果汇总。它适合可并行拆分的任务，比如「同时调研五个方向」。</p>    <p>好处是每个 Worker 的上下文都很干净——它只知道自己那一小块。坏处是 Manager 成了瓶颈：拆得好不好，直接决定整体质量。</p>    <p>MetaGPT 是这条路的极致：把软件公司的分工整个搬进来，产品、架构、开发各扮演一个 Agent，能从一句话生成 PRD 和接口设计。体系重、学起来陡，但确实演示了「组织即架构」这件事。</p>
+  </div>
+
+  <h2><span class="n">5</span>别家怎么表达同一件事</h2>
+  <div class="sec">
+    <div class="tw"><table class="tb">
+      <thead><tr><th style="width:24%">框架</th><th style="width:34%">它的隐喻</th><th style="width:42%">本质对应</th></tr></thead>
+      <tbody>
+        <tr><td><b>AutoGen</b></td><td>几个 Agent 开会</td><td>群聊 / 层级</td></tr>
+        <tr><td><b>CrewAI</b></td><td>组一个团队，有角色有分工</td><td>层级 + 角色提示</td></tr>
+        <tr><td><b>MetaGPT</b></td><td>一家软件公司</td><td>带固定 SOP 的层级</td></tr>
+        <tr><td><b>OpenAI Agents SDK</b></td><td>交接（handoff）</td><td>双人对话的链式串联</td></tr>
+      </tbody>
+    </table></div>    <p>隐喻不同，落到实现上都是「谁在什么时候、拿着什么上下文、说什么话」。把这句记住，换框架时不用重学。</p>
+  </div>
+
+  <div class="summary">
+    <h3>本页要点</h3>
+    <ol>
+      <li>三种形态：双人对话、群聊、层级，AutoGen 的归纳。</li>
+      <li>双人对话最便宜，「审」与「做」用两套上下文，天然抵消自查盲区。</li>
+      <li>群聊的坑是上下文膨胀，层级的瓶颈是 Manager 的拆解质量。</li>
+      <li>换框架时只需问：谁、在什么时候、拿着什么上下文、说什么话。</li>
+    </ol>
+  </div>
+
+  <h2><span class="n">★</span>自测</h2>
+  <div class="quiz">
+    <div class="qz">
+      <div class="q"><i>Q1</i>双人对话为什么比让同一个 Agent 自查更有效？</div>
+      <div class="opts">
+        <button class="opt"><i>A</i><span>因为用的模型更大</span></button>
+        <button class="opt" data-ok="1"><i>B</i><span>因为审核方看不到执行方的思考过程，只能看结果，正好避开自查盲区</span></button>
+        <button class="opt"><i>C</i><span>因为更便宜</span></button>
+        <button class="opt"><i>D</i><span>因为可以并行</span></button>
+      </div>
+      <div class="ex">关键在上下文隔离。自查时它知道自己的意图，于是会自动「理解」自己的错误。</div>
+    </div>
+    <div class="qz">
+      <div class="q"><i>Q2</i>群聊这种形态最主要的工程风险是什么？</div>
+      <div class="opts">
+        <button class="opt"><i>A</i><span>角色太多记不住名字</span></button>
+        <button class="opt" data-ok="1"><i>B</i><span>每个角色都要读全部历史，上下文迅速膨胀</span></button>
+        <button class="opt"><i>C</i><span>不能并行</span></button>
+        <button class="opt"><i>D</i><span>不支持中文</span></button>
+      </div>
+      <div class="ex">五轮之后，每个角色的输入都又长又吵。要么压缩历史，要么改成层级。</div>
+    </div>
+  </div>
+  <div class="cite">
+    <b>资料出处</b>
+    AutoGen 多智能体对话框架论文；CrewAI 角色模型；MetaGPT (arXiv:2308.00352)；OpenAI Agents SDK 文档。
+  </div>
+
+  <div id="termIndex"></div>
+</main>
+<script src="assets/course.js?v=20261107b"></script>
+</body>
+</html>

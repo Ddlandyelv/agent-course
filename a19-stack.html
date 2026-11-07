@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-page="stack">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>LangChain 与 LangGraph · Agent 学习空间</title>
+<meta name="description" content="一个把零件拼成流水线，一个把流水线改成能回头的图。这一页讲清两者的五件套与分工，以及为什么「取代」这个说法是错的。">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Ccircle cx='16' cy='16' r='15' fill='%23F6F2EC'/%3E%3Ccircle cx='16' cy='9' r='3.2' fill='none' stroke='%23B8462A' stroke-width='2'/%3E%3Ccircle cx='9' cy='21' r='3.2' fill='none' stroke='%23B8462A' stroke-width='2'/%3E%3Ccircle cx='23' cy='21' r='3.2' fill='none' stroke='%23B8462A' stroke-width='2'/%3E%3Cpath d='M14.2 11.4L10.4 18.2M17.8 11.4l3.8 6.8M12.2 21h7.6' stroke='%23B8462A' stroke-width='1.6' fill='none'/%3E%3C/svg%3E">
+<link rel="stylesheet" href="assets/style.css?v=20261107b">
+</head>
+<body>
+<main class="doc" id="doc">
+
+  <header class="lesson-head">
+    <div class="kicker"><span class="sec-no">15</span><span>第四部分 · 动手与选型</span><span>·</span><span>LANGCHAIN & LANGGRAPH</span></div>
+    <h1>LangChain 与 LangGraph</h1>
+    <p class="lede">一个把零件拼成流水线，一个把流水线改成能回头的图。这一页讲清两者的五件套与分工，以及为什么「取代」这个说法是错的。</p>
+    <div class="meta-row">
+      <span class="pill acc">12 分钟</span>
+      <span class="pill">含五件套</span>
+      <span class="pill">含选型表</span>
+    </div>
+  </header>
+
+  <div class="whybox">
+    <div class="whybox-h">这一页在能力栈上的位置</div>
+    <div class="whybox-g">
+      <div class="wide"><b>对应环节</b><span>工程层 · 框架</span></div>
+      <div><b>不学卡在哪</b><span>把两个库当成竞品二选一，或者在不该用框架时硬上框架。</span></div>
+      <div><b>它解决什么</b><span>按「要不要回头、要不要续跑」选层，而不是按热度选。</span></div>
+    </div>
+  </div>
+
+  <h2><span class="n">1</span>LangChain：把零件拼成一条流水线</h2>
+  <div class="sec">
+    <p>LangChain 2022 年出现，最早干的一件事很朴素：把「写提示词 → 调模型 → 解析输出」这三步标准化。在这之前，每个人调模型都得自己拼字符串、自己解析返回。</p>    <p>它给出的写法叫 LCEL，就是用一根竖线把几步串起来，像 shell 里的管道：</p>    <pre class="code">chain = prompt | model | parser</pre>    <p>读法很直白：把 prompt 的结果喂给 model，再把 model 的结果喂给 parser。<b>数据单向流动，过了这一步就回不了头。</b></p>    <div class="flow"><div class="fn"><b>提示词</b>prompt</div><div class="fa">→</div><div class="fn"><b>模型</b>model</div><div class="fa">→</div><div class="fn"><b>解析器</b>parser</div><div class="fa">→</div><div class="fn"><b>结果</b></div></div>    <p>这套写法适合单向、步骤固定的活：文档问答（先检索、再拼上下文、再生成）、翻译、摘要、把一段文字抽成结构化数据。</p>    <p>好处是集成特别全——几百种模型、向量库、文档加载器都封装好了，换个模型供应商通常只改一行。坏处也很明显：<b>它是一条直线，不会回头。</b></p>
+  </div>
+
+  <h2><span class="n">2</span>LangGraph：把流水线改成一张能回头的图</h2>
+  <div class="sec">
+    <p>问题出在「不会回头」这四个字上。Agent 干活是这样的：调个工具 → 看结果 → 发现不够 → 换个工具再调 → 还是不行 → 回头改思路。这是一圈一圈绕的，直线根本表达不了。</p>    <p>早期 LangChain 的做法是藏一个 while 循环在内部（叫 AgentExecutor）。能用，但你看不见里面发生了什么，也没法在中途喊停。</p>    <p>2024 年 1 月，同一个团队拿出 LangGraph：把这个循环画出来，让你自己定义。它借用了 Google 2010 年那篇 Pregel 论文的图计算模型。</p>    <p>它的全部家当就五样东西，缺一样都跑不转：</p>    <div class="tw"><table class="tb">
+      <thead><tr><th style="width:18%">部件</th><th style="width:50%">是什么</th><th style="width:32%">缺了会怎样</th></tr></thead>
+      <tbody>
+        <tr><td><b>State</b></td><td>一个共享字典，整趟流程共用。所有节点读它、改它</td><td>节点之间没法传递信息</td></tr>
+        <tr><td><b>Node</b></td><td>一个普通函数：拿 State，干活，返回「我要改哪几个字段」</td><td>没有可执行单元</td></tr>
+        <tr><td><b>Edge</b></td><td>决定下一步去哪。分固定和条件两种</td><td>只能线性执行，不能分支循环</td></tr>
+        <tr><td><b>Reducer</b></td><td>两个节点同时改同一字段时怎么合并</td><td>并行写同一字段直接报错</td></tr>
+        <tr><td><b>Checkpointer</b></td><td>每走完一步存一次档</td><td>不能断点续跑、不能等人</td></tr>
+      </tbody>
+    </table></div>    <p>还有一个容易忽略的保护：<b>recursion_limit 默认 25 步</b>。模型要是陷进死循环一直调工具，会在第 25 步报错停下，而不是把账单刷爆。</p>
+  </div>
+
+  <h2><span class="n">3</span>它俩现在是什么关系？上下层，不是二选一</h2>
+  <div class="sec">
+    <p>2025 年 10 月 22 日，两个库同时发了 1.0，官方把分工写死了：</p>    <div class="tw"><table class="tb">
+      <thead><tr><th style="width:18%"></th><th style="width:41%">LangChain</th><th style="width:41%">LangGraph</th></tr></thead>
+      <tbody>
+        <tr><td>定位</td><td>Agent 框架：抽象与集成</td><td>编排运行时：持久执行</td></tr>
+        <tr><td>流程形态</td><td>单向管道（不能回头）</td><td>图，可以循环、分支</td></tr>
+        <tr><td>状态</td><td>随调用传递，基本无状态</td><td>显式共享 State，可持久化</td></tr>
+        <tr><td>出错怎么办</td><td>整条重跑</td><td>从上一个存档点续跑</td></tr>
+        <tr><td>能不能等人</td><td>不好做</td><td>原生支持（中断后恢复）</td></tr>
+        <tr><td>适合</td><td>RAG 问答、摘要、抽取、简单助手</td><td>长任务、多步骤、人工审批、多智能体</td></tr>
+      </tbody>
+    </table></div>    <p>一句话：LangChain 让你几天内拼出一个能跑的 Agent；LangGraph 保证它在生产环境里不丢状态、能暂停、能查账。</p>    <p>所以网上那些「LangGraph 会不会取代 LangChain」的讨论，前提就错了。它们从来不是竞品。<b>你在 LangChain 里写的 Agent，跑的就是 LangGraph 的引擎。</b></p>
+  </div>
+
+  <h2><span class="n">4</span>选型的一句话</h2>
+  <div class="sec">
+    <div class="tw"><table class="tb">
+      <thead><tr><th style="width:46%">你的情况</th><th style="width:54%">选什么</th></tr></thead>
+      <tbody>
+        <tr><td>只是想搞明白 Agent 怎么跑</td><td>先别用框架。手写几十行循环，比学框架快，也更懂原理（见 03 页）</td></tr>
+        <tr><td>做文档问答、资料检索</td><td>LlamaIndex 或 LangChain</td></tr>
+        <tr><td>任务要跑很久、中间要人等、要断点续跑</td><td>LangGraph</td></tr>
+        <tr><td>要让几个角色分工接力</td><td>CrewAI 上手最快；要求可控就 LangGraph</td></tr>
+        <tr><td>不会写代码但要接进业务流程</td><td>n8n / Dify 这类可视化工具</td></tr>
+      </tbody>
+    </table></div>    <div class="note"><p>框架会换，概念不会。状态、循环、工具、记忆、检查点——这几样换个框架还是这几样。学会一个，转另一个通常只要几天。</p></div>
+  </div>
+
+  <div class="summary">
+    <h3>本页要点</h3>
+    <ol>
+      <li>LangChain 是单向管道（LCEL），适合固定步骤；LangGraph 是能回头的图。</li>
+      <li>LangGraph 五件套：State、Node、Edge、Reducer、Checkpointer。</li>
+      <li>2025 年 10 月后两者是上下层关系，不是竞品。</li>
+      <li>recursion_limit 默认 25 步，是防跑飞的最后一道闸。</li>
+    </ol>
+  </div>
+
+  <h2><span class="n">★</span>自测</h2>
+  <div class="quiz">
+    <div class="qz">
+      <div class="q"><i>Q1</i>LangGraph 的 Checkpointer 解决什么问题？</div>
+      <div class="opts">
+        <button class="opt"><i>A</i><span>让模型更快</span></button>
+        <button class="opt" data-ok="1"><i>B</i><span>每步存档，使任务能断点续跑、能等人、能回滚</span></button>
+        <button class="opt"><i>C</i><span>减少 token</span></button>
+        <button class="opt"><i>D</i><span>自动生成提示词</span></button>
+      </div>
+      <div class="ex">这是它和「手写 while 循环」最大的区别：循环跑到一半进程挂了，状态还在。</div>
+    </div>
+    <div class="qz">
+      <div class="q"><i>Q2</i>「LangGraph 会取代 LangChain」这个说法错在哪？</div>
+      <div class="opts">
+        <button class="opt"><i>A</i><span>因为 LangGraph 更贵</span></button>
+        <button class="opt" data-ok="1"><i>B</i><span>因为两者是上下层：LangChain 提供抽象，LangGraph 提供运行时，LangChain 的 Agent 就跑在它上面</span></button>
+        <button class="opt"><i>C</i><span>因为 LangChain 更强</span></button>
+        <button class="opt"><i>D</i><span>因为都开源</span></button>
+      </div>
+      <div class="ex">2025 年 10 月两个库同时发 1.0，官方明确了分工。它们是配套，不是替代。</div>
+    </div>
+  </div>
+  <div class="cite">
+    <b>资料出处</b>
+    LangChain / LangGraph 1.0 官方文档与发布说明；Pregel 图计算模型 (Google, 2010)。
+  </div>
+
+  <div id="termIndex"></div>
+</main>
+<script src="assets/course.js?v=20261107b"></script>
+</body>
+</html>

@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-page="platform">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>五个平台，各站一个位置 · Agent 学习空间</title>
+<meta name="description" content="AutoGPT、MetaGPT、FastGPT、dify、Coze——它们不在同一层，混着比没有意义。这一页给出三问判断顺序，以及什么时候必">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Ccircle cx='16' cy='16' r='15' fill='%23F6F2EC'/%3E%3Ccircle cx='16' cy='9' r='3.2' fill='none' stroke='%23B8462A' stroke-width='2'/%3E%3Ccircle cx='9' cy='21' r='3.2' fill='none' stroke='%23B8462A' stroke-width='2'/%3E%3Ccircle cx='23' cy='21' r='3.2' fill='none' stroke='%23B8462A' stroke-width='2'/%3E%3Cpath d='M14.2 11.4L10.4 18.2M17.8 11.4l3.8 6.8M12.2 21h7.6' stroke='%23B8462A' stroke-width='1.6' fill='none'/%3E%3C/svg%3E">
+<link rel="stylesheet" href="assets/style.css?v=20261107b">
+</head>
+<body>
+<main class="doc" id="doc">
+
+  <header class="lesson-head">
+    <div class="kicker"><span class="sec-no">16</span><span>第四部分 · 动手与选型</span><span>·</span><span>PLATFORMS</span></div>
+    <h1>五个平台，各站一个位置</h1>
+    <p class="lede">AutoGPT、MetaGPT、FastGPT、dify、Coze——它们不在同一层，混着比没有意义。这一页给出三问判断顺序，以及什么时候必须回到代码。</p>
+    <div class="meta-row">
+      <span class="pill acc">9 分钟</span>
+      <span class="pill">含判断顺序</span>
+      <span class="pill">含对照表</span>
+    </div>
+  </header>
+
+  <div class="whybox">
+    <div class="whybox-h">这一页在能力栈上的位置</div>
+    <div class="whybox-g">
+      <div class="wide"><b>对应环节</b><span>工程层 · 平台选型</span></div>
+      <div><b>不学卡在哪</b><span>被界面和热度带走，选完才发现数据出不去或逻辑改不动。</span></div>
+      <div><b>它解决什么</b><span>用三个硬约束按顺序排除，把选型从「比较功能」变成「排除不可能」。</span></div>
+    </div>
+  </div>
+
+  <h2><span class="n">1</span>五个平台，各自站稳一个位置</h2>
+  <div class="sec">
+    <p>除了 LangChain / LangGraph 这对底层组合，实际动手时更常被拿来比较的是下面五个。它们不在同一层，混着比没有意义——<b>先看它替你把哪一段包了</b>。</p>    <div class="tw"><table class="tb">
+      <thead><tr><th style="width:14%">平台</th><th style="width:38%">它替你包了什么</th><th style="width:26%">代价</th><th style="width:22%">适合谁</th></tr></thead>
+      <tbody>
+        <tr><td><b>AutoGPT</b></td><td>自动拆解目标并连续执行，内置多种角色和 prompt 模板</td><td>概念多、模板多；容易跑偏</td><td>想先看「全自动」长什么样</td></tr>
+        <tr><td><b>MetaGPT</b></td><td>把软件公司的分工搬进来，能从一句话生成 PRD 和接口设计</td><td>体系重，学起来陡；不适合小任务</td><td>用自然语言低成本搭软件原型</td></tr>
+        <tr><td><b>FastGPT</b></td><td>可加载自有或开源模型，内置 RAG 流程，支持本地部署</td><td>面向开发者，要懂部署和调优</td><td>数据不能出内网、要私有知识库</td></tr>
+        <tr><td><b>dify</b></td><td>可视化编排加现成模型 API，业务人员也能拖出一个应用</td><td>数据经云端；性能受上游 API 限制</td><td>企业快速上线客服、内容工具</td></tr>
+        <tr><td><b>Coze</b></td><td>无代码搭聊天机器人，能挂知识库、多渠道发布</td><td>插件建议不超过 4 个，复杂逻辑撑不住</td><td>面向 C 端的问答、客服机器人</td></tr>
+      </tbody>
+    </table></div>
+  </div>
+
+  <h2><span class="n">2</span>判断顺序：先问三个问题</h2>
+  <div class="sec">
+    <ol>
+      <li><b>数据能不能出内网？</b>不能，就只剩可私有化部署的那几个（FastGPT、自建 LangChain）。</li>
+      <li><b>谁来维护？</b>业务人员维护选 dify / Coze；工程师维护才有必要上 LangChain / LangGraph。</li>
+      <li><b>流程内部的逻辑要不要改？</b>要，就只能回到代码层。可视化工具的强项是连线，弱项是分支里的细节。</li>
+    </ol>    <div class="note"><p>这个顺序不能颠倒。先看隐私、再看人、最后看逻辑——很多选型失败是因为反过来：先被界面好看吸引，最后发现数据出不去。</p></div>
+  </div>
+
+  <h2><span class="n">3</span>还有一类：可视化低代码</h2>
+  <div class="sec">
+    <p>n8n、Dify、Flowise 这类拖拽连线的，不懂代码也能搭。适合把 AI 接进现有业务流程，但<b>复杂逻辑和精细控制会让位给易用性</b>。</p>    <div class="tw"><table class="tb">
+      <thead><tr><th style="width:18%"></th><th style="width:41%">代码框架</th><th style="width:41%">可视化工具</th></tr></thead>
+      <tbody>
+        <tr><td>上手速度</td><td>慢，要写代码</td><td>快，拖拽连线</td></tr>
+        <tr><td>复杂逻辑</td><td>任意表达</td><td>节点能表达的范围内</td></tr>
+        <tr><td>排错</td><td>能断点、能打日志</td><td>只能看节点输入输出</td></tr>
+        <tr><td>维护者</td><td>工程师</td><td>业务人员也能维护</td></tr>
+      </tbody>
+    </table></div>
+  </div>
+
+  <h2><span class="n">4</span>最后一句比选型更重要</h2>
+  <div class="sec">
+    <p><b>框架会换，概念不会。</b>状态、循环、工具、记忆、检查点——这几样东西，换个框架还是这几样。</p>    <p>所以别在选型上纠结太久。拿一个最像你需求的，花两小时做个最小版本，跑通一遍，比读两天对比文章有用。</p>
+  </div>
+
+  <div class="summary">
+    <h3>本页要点</h3>
+    <ol>
+      <li>五个平台不在同一层，先看它替你包了哪一段。</li>
+      <li>判断顺序：数据能不能出内网 → 谁维护 → 逻辑要不要改。</li>
+      <li>可视化工具用易用性换精细控制，复杂分支必须回到代码层。</li>
+      <li>框架会换，概念不会。两小时做个小样比读两天对比有用。</li>
+    </ol>
+  </div>
+
+  <h2><span class="n">★</span>自测</h2>
+  <div class="quiz">
+    <div class="qz">
+      <div class="q"><i>Q1</i>选型时第一个该问的问题是什么？</div>
+      <div class="opts">
+        <button class="opt"><i>A</i><span>哪个最火</span></button>
+        <button class="opt" data-ok="1"><i>B</i><span>数据能不能出内网</span></button>
+        <button class="opt"><i>C</i><span>哪个最便宜</span></button>
+        <button class="opt"><i>D</i><span>哪个插件最多</span></button>
+      </div>
+      <div class="ex">隐私是硬约束，不能妥协。先排除掉不满足的，剩下的才谈体验和价格。</div>
+    </div>
+    <div class="qz">
+      <div class="q"><i>Q2</i>什么情况下必须回到代码层？</div>
+      <div class="opts">
+        <button class="opt"><i>A</i><span>需要更多插件时</span></button>
+        <button class="opt" data-ok="1"><i>B</i><span>流程内部的分支逻辑需要精细控制时</span></button>
+        <button class="opt"><i>C</i><span>用户变多时</span></button>
+        <button class="opt"><i>D</i><span>需要多语言时</span></button>
+      </div>
+      <div class="ex">可视化工具的强项是连线，弱项是分支里的细节。逻辑一复杂，节点图会变成一团乱麻。</div>
+    </div>
+  </div>
+  <div class="cite">
+    <b>资料出处</b>
+    各平台官方文档；企业内 Agent 落地的选型经验。
+  </div>
+
+  <div id="termIndex"></div>
+</main>
+<script src="assets/course.js?v=20261107b"></script>
+</body>
+</html>

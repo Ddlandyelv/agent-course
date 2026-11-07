@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-page="multi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>一次一问，撑不住真实任务 · Agent 学习空间</title>
+<meta name="description" content="「计划一次三亚旅行」这句话背后是一张网：多步骤、要动手、会反复。这一页讲清单个 Agent 的边界，以及什么时候才真的该拆。">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Ccircle cx='16' cy='16' r='15' fill='%23F6F2EC'/%3E%3Ccircle cx='16' cy='9' r='3.2' fill='none' stroke='%23B8462A' stroke-width='2'/%3E%3Ccircle cx='9' cy='21' r='3.2' fill='none' stroke='%23B8462A' stroke-width='2'/%3E%3Ccircle cx='23' cy='21' r='3.2' fill='none' stroke='%23B8462A' stroke-width='2'/%3E%3Cpath d='M14.2 11.4L10.4 18.2M17.8 11.4l3.8 6.8M12.2 21h7.6' stroke='%23B8462A' stroke-width='1.6' fill='none'/%3E%3C/svg%3E">
+<link rel="stylesheet" href="assets/style.css?v=20261107b">
+</head>
+<body>
+<main class="doc" id="doc">
+
+  <header class="lesson-head">
+    <div class="kicker"><span class="sec-no">11</span><span>第三部分 · 一个 Agent 不够用</span><span>·</span><span>WHY MORE THAN ONE</span></div>
+    <h1>一次一问，撑不住真实任务</h1>
+    <p class="lede">「计划一次三亚旅行」这句话背后是一张网：多步骤、要动手、会反复。这一页讲清单个 Agent 的边界，以及什么时候才真的该拆。</p>
+    <div class="meta-row">
+      <span class="pill acc">9 分钟</span>
+      <span class="pill">含三亚案例</span>
+      <span class="pill">拆不拆的判断</span>
+    </div>
+  </header>
+
+  <div class="whybox">
+    <div class="whybox-h">这一页在能力栈上的位置</div>
+    <div class="whybox-g">
+      <div class="wide"><b>对应环节</b><span>协作层 · 任务形态</span></div>
+      <div><b>不学卡在哪</b><span>把复杂任务硬塞进一次问答，或者在不需要时拆成一堆 Agent。</span></div>
+      <div><b>它解决什么</b><span>给出「什么任务必须拆、什么任务不该拆」的判断依据。</span></div>
+    </div>
+  </div>
+
+  <h2><span class="n">1</span>一句话背后的那张网</h2>
+  <div class="sec">
+    <p>现在用大模型的方式，基本是「一次一问、一次一答」：你说一句，它回一段。这个模式高效、直接，但它只适用于<b>定义清晰的单一任务</b>——写一段文案、解释一个概念、翻译一句话。</p>    <p>现实里的目标很少长这样。以「计划一次五天四夜的三亚家庭旅行」为例，这句话背后是一张网：</p>    <ul>
+      <li>先看预算——口袋里有 1.5 万，能去哪、住什么档次</li>
+      <li>查天气——十二月三亚是否下雨，要不要带伞</li>
+      <li>查航班和酒店——哪个时间段便宜，哪个位置方便</li>
+      <li>发现订不到——「这周五晚上没有空房了」，得改酒店</li>
+      <li>改完再看路线——换的酒店离景点远了，行程要重排</li>
+      <li>最后打包行李</li>
+    </ul>
+  </div>
+
+  <h2><span class="n">2</span>三个特征，恰好是一次一问做不到的</h2>
+  <div class="sec">
+    <div class="tw"><table class="tb">
+      <thead><tr><th style="width:16%">特征</th><th style="width:84%">为什么一次一问做不到</th></tr></thead>
+      <tbody>
+        <tr><td><b>多步骤</b></td><td>每一步的输入依赖上一步的结果。查完预算才知道能住什么档次，不是并列关系</td></tr>
+        <tr><td><b>要动手</b></td><td>查航班、订酒店、比价，都需要真的调接口，光会说没用</td></tr>
+        <tr><td><b>会反复</b></td><td>「这周五没房」是一个意外，需要回头改方案。单轮对话没有「回头」这个动作</td></tr>
+      </tbody>
+    </table></div>    <p>所以 Agent 要解决的不是「答得更好」，而是<b>「把一串动作串起来，并且在中间出错时能改」</b>。</p>    <p>这也是为什么它的核心不是模型更强，而是多了记忆、规划和工具这三样东西。</p>
+  </div>
+
+  <h2><span class="n">3</span>一个 Agent 就够了吗</h2>
+  <div class="sec">
+    <p>同样这件旅行的事，一个 Agent 也能做，只要它的上下文撑得住、工具接得全。真正逼你拆成多个的，是三件事：</p>    <div class="tw"><table class="tb">
+      <thead><tr><th style="width:24%">逼你拆的原因</th><th style="width:44%">表现</th><th style="width:32%">拆了之后</th></tr></thead>
+      <tbody>
+        <tr><td><b>上下文塞不下</b></td><td>同时要记住预算、天气、航班、酒店、路线，很快爆窗</td><td>每个角色只管自己那摊信息</td></tr>
+        <tr><td><b>技能冲突</b></td><td>一个提示里既要「严格核算」又要「灵活推荐」，两套口径互相打架</td><td>不同角色用不同提示，各守一套标准</td></tr>
+        <tr><td><b>需要独立审核</b></td><td>自己写自己查，查不出盲区</td><td>审核员另开一个上下文，只看结果</td></tr>
+      </tbody>
+    </table></div>    <p>注意：这三条都是<b>信息与判断的结构问题</b>，不是「任务太大」。任务大但信息能装下、判断能自洽的，一个 Agent 反而更稳。</p>
+  </div>
+
+  <h2><span class="n">4</span>拆之前先问一句</h2>
+  <div class="sec">
+    <div class="note"><p>「这件事如果由一个人做完，他需要同时记住多少东西、同时守几套标准？」<br>答案是「不多」——那就别拆。拆开带来的通信成本，通常比你想的高（见 13 页）。</p></div>
+  </div>
+
+  <div class="summary">
+    <h3>本页要点</h3>
+    <ol>
+      <li>真实任务有三个特征：多步骤、要动手、会反复，单轮问答都做不到。</li>
+      <li>Agent 解决的不是答得更好，是把动作串起来并在出错时改。</li>
+      <li>逼你拆成多个角色的，是上下文塞不下、技能冲突、需要独立审核——不是「任务大」。</li>
+    </ol>
+  </div>
+
+  <h2><span class="n">★</span>自测</h2>
+  <div class="quiz">
+    <div class="qz">
+      <div class="q"><i>Q1</i>「这周五没房了」这个意外，为什么单轮对话处理不了？</div>
+      <div class="opts">
+        <button class="opt"><i>A</i><span>因为它太长</span></button>
+        <button class="opt" data-ok="1"><i>B</i><span>因为单轮对话没有「回头改方案」这个动作</span></button>
+        <button class="opt"><i>C</i><span>因为模型不知道酒店</span></button>
+        <button class="opt"><i>D</i><span>因为需要付费</span></button>
+      </div>
+      <div class="ex">一次一问的形态是线性的：问完就结束。要回头，必须有循环和状态。</div>
+    </div>
+    <div class="qz">
+      <div class="q"><i>Q2</i>下面哪个理由<b>不足以</b>支撑拆成多个 Agent？</div>
+      <div class="opts">
+        <button class="opt"><i>A</i><span>上下文装不下所有信息</span></button>
+        <button class="opt"><i>B</i><span>需要一套独立的标准来审核</span></button>
+        <button class="opt" data-ok="1"><i>C</i><span>任务听起来很大、步骤很多</span></button>
+        <button class="opt"><i>D</i><span>两种技能要求互相冲突</span></button>
+      </div>
+      <div class="ex">「大」不是理由。信息装得下、判断能自洽，一个 Agent 更稳；拆开要付通信成本。</div>
+    </div>
+  </div>
+  <div class="cite">
+    <b>资料出处</b>
+    AutoGen 论文对多智能体协作形态的归纳；真实任务分解的工程经验。
+  </div>
+
+  <div id="termIndex"></div>
+</main>
+<script src="assets/course.js?v=20261107b"></script>
+</body>
+</html>

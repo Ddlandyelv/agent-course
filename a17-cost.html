@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-page="cost">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>每多一个角色，就多一份开销 · Agent 学习空间</title>
+<meta name="description" content="多智能体不是免费的。token、信息损耗、误解放大、调试难度，四样一起涨。这一页给出「拆几个」的经验算法。">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Ccircle cx='16' cy='16' r='15' fill='%23F6F2EC'/%3E%3Ccircle cx='16' cy='9' r='3.2' fill='none' stroke='%23B8462A' stroke-width='2'/%3E%3Ccircle cx='9' cy='21' r='3.2' fill='none' stroke='%23B8462A' stroke-width='2'/%3E%3Ccircle cx='23' cy='21' r='3.2' fill='none' stroke='%23B8462A' stroke-width='2'/%3E%3Cpath d='M14.2 11.4L10.4 18.2M17.8 11.4l3.8 6.8M12.2 21h7.6' stroke='%23B8462A' stroke-width='1.6' fill='none'/%3E%3C/svg%3E">
+<link rel="stylesheet" href="assets/style.css?v=20261107b">
+</head>
+<body>
+<main class="doc" id="doc">
+
+  <header class="lesson-head">
+    <div class="kicker"><span class="sec-no">13</span><span>第三部分 · 一个 Agent 不够用</span><span>·</span><span>THE COST OF COLLABORATION</span></div>
+    <h1>每多一个角色，就多一份开销</h1>
+    <p class="lede">多智能体不是免费的。token、信息损耗、误解放大、调试难度，四样一起涨。这一页给出「拆几个」的经验算法。</p>
+    <div class="meta-row">
+      <span class="pill acc">8 分钟</span>
+      <span class="pill">含成本公式</span>
+      <span class="pill">含判断清单</span>
+    </div>
+  </header>
+
+  <div class="whybox">
+    <div class="whybox-h">这一页在能力栈上的位置</div>
+    <div class="whybox-g">
+      <div class="wide"><b>对应环节</b><span>协作层 · 成本边界</span></div>
+      <div><b>不学卡在哪</b><span>觉得角色越多越强，结果成本翻倍、错误难定位。</span></div>
+      <div><b>它解决什么</b><span>用可估算的成本模型决定拆几个，而不是凭感觉。</span></div>
+    </div>
+  </div>
+
+  <h2><span class="n">1</span>每多一个角色，就多一份开销</h2>
+  <div class="sec">
+    <p>关键不在「哪个更先进」，而在<b>通信开销</b>：每多一个 Agent，就多一份上下文传递和一轮可能的误解。</p>    <div class="tw"><table class="tb">
+      <thead><tr><th style="width:20%">开销类型</th><th style="width:46%">具体是什么</th><th style="width:34%">体现</th></tr></thead>
+      <tbody>
+        <tr><td><b>Token 成本</b></td><td>每个角色都要读一遍共享历史</td><td>三个角色 ≈ 三倍输入</td></tr>
+        <tr><td><b>信息损耗</b></td><td>A 说给 B 的话，B 只能看到文字，看不到 A 的意图</td><td>交接处最容易丢约束</td></tr>
+        <tr><td><b>误解放大</b></td><td>一次误读会被下游当成事实继续传递</td><td>错得很自信，且找不到源头</td></tr>
+        <tr><td><b>调试难度</b></td><td>出错时要翻好几份对话记录</td><td>定位时间成倍增加</td></tr>
+      </tbody>
+    </table></div>
+  </div>
+
+  <h2><span class="n">2</span>三种典型的失效</h2>
+  <div class="sec">
+    <div class="def">
+      <div class="def-h">① 交接处丢约束<span class="loc">最常见</span></div>
+      <p>策划说「预算 1.5 万」，执行只看到「预算充足」。数字在转述时被概括掉了，后面全错。</p>
+    </div>    <div class="def">
+      <div class="def-h">② 责任扩散<span class="loc">最难查</span></div>
+      <p>三个角色都觉得「这一步该别人做」，于是没人做。或者都做了，做了三遍且互不一致。</p>
+    </div>    <div class="def">
+      <div class="def-h">③ 成本失控<span class="loc">最烧钱</span></div>
+      <p>群聊里每个角色每轮都要读全部历史，五轮之后单次调用就顶到上下文上限，成本指数级上涨。</p>
+    </div>    <p>对策其实很朴素：<b>交接时传结构化数据，不传自然语言概括。</b>把「预算 15000 元、上限不可超」写成字段，比写一句「预算不多」可靠得多。</p>
+  </div>
+
+  <h2><span class="n">3</span>能用两个角色解决的，就不要上五个</h2>
+  <div class="sec">
+    <p>这句话是经验，不是原则。它背后的算法很简单：</p>    <pre class="code">拆成 N 个角色的收益 ≈ 每个角色专注度提升带来的质量增益
+拆成 N 个角色的成本 ≈ N × 单次调用成本 × 上下文长度增长
+
+多数任务的实际情况：
+  N=1 → N=2   收益明显（多了一个独立视角）
+  N=2 → N=3   收益一般（除非任务真的有三块独立信息）
+  N≥4         成本远超收益，除非任务本身可并行切分</pre>    <div class="note"><p>真实项目里最稳的配置通常是 2 个角色：一个干活、一个审。三个以上只在「任务可并行拆分」或「信息确实装不下」时才划算。</p></div>
+  </div>
+
+  <h2><span class="n">4</span>什么情况下真的该上多个</h2>
+  <div class="sec">
+    <div class="tw"><table class="tb">
+      <thead><tr><th style="width:20%">条件</th><th style="width:40%">例子</th><th style="width:40%">为什么单个不行</th></tr></thead>
+      <tbody>
+        <tr><td><b>信息装不下</b></td><td>同时研究五个竞品，每个都要读十几份文档</td><td>一个上下文塞不进五份调研</td></tr>
+        <tr><td><b>可并行</b></td><td>五个方向互不依赖</td><td>串行做要五倍时间</td></tr>
+        <tr><td><b>标准冲突</b></td><td>既要严格合规审查，又要快速出创意</td><td>两套口径在一个提示里互相打架</td></tr>
+        <tr><td><b>需要独立审计</b></td><td>金融、医疗类输出必须有人复核</td><td>自查无法发现自身盲区</td></tr>
+      </tbody>
+    </table></div>
+  </div>
+
+  <div class="summary">
+    <h3>本页要点</h3>
+    <ol>
+      <li>多一个 Agent，就多一份 token 成本、信息损耗、误解放大和调试难度。</li>
+      <li>三种典型失效：交接丢约束、责任扩散、成本失控。</li>
+      <li>最稳的配置通常是两个角色：一个干活、一个审。</li>
+      <li>只在信息装不下、可并行、标准冲突、需独立审计时才上多个。</li>
+    </ol>
+  </div>
+
+  <h2><span class="n">★</span>自测</h2>
+  <div class="quiz">
+    <div class="qz">
+      <div class="q"><i>Q1</i>「交接处丢约束」最好的对策是什么？</div>
+      <div class="opts">
+        <button class="opt"><i>A</i><span>让角色多聊几轮</span></button>
+        <button class="opt" data-ok="1"><i>B</i><span>交接时传结构化字段，不传自然语言概括</span></button>
+        <button class="opt"><i>C</i><span>换更大的模型</span></button>
+        <button class="opt"><i>D</i><span>减少角色数量到 1 个</span></button>
+      </div>
+      <div class="ex">「预算 15000，不可超」写成字段，比「预算不多」这种概括可靠得多。</div>
+    </div>
+    <div class="qz">
+      <div class="q"><i>Q2</i>为什么说「两个角色」往往是最优配置？</div>
+      <div class="opts">
+        <button class="opt"><i>A</i><span>因为框架只支持两个</span></button>
+        <button class="opt" data-ok="1"><i>B</i><span>因为多加一个独立视角收益明显，再加就主要是成本</span></button>
+        <button class="opt"><i>C</i><span>因为三个人会吵架</span></button>
+        <button class="opt"><i>D</i><span>因为两个最便宜</span></button>
+      </div>
+      <div class="ex">收益曲线在 N=2 处最陡，之后迅速变平。除非任务可并行切分。</div>
+    </div>
+  </div>
+  <div class="cite">
+    <b>资料出处</b>
+    多智能体系统的工程实践总结；AutoGen 与 CrewAI 的上下文传递机制。
+  </div>
+
+  <div id="termIndex"></div>
+</main>
+<script src="assets/course.js?v=20261107b"></script>
+</body>
+</html>

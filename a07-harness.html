@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-page="harness">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>harness：套在模型外面的那层 · Agent 学习空间</title>
+<meta name="description" content="模型的全部能力，都要靠这层程序翻译成动作。它做六件事，其中两件最容易把项目搞垮。<b>这一页是全课最该精读的一页。</b>">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Ccircle cx='16' cy='16' r='15' fill='%23F6F2EC'/%3E%3Ccircle cx='16' cy='9' r='3.2' fill='none' stroke='%23B8462A' stroke-width='2'/%3E%3Ccircle cx='9' cy='21' r='3.2' fill='none' stroke='%23B8462A' stroke-width='2'/%3E%3Ccircle cx='23' cy='21' r='3.2' fill='none' stroke='%23B8462A' stroke-width='2'/%3E%3Cpath d='M14.2 11.4L10.4 18.2M17.8 11.4l3.8 6.8M12.2 21h7.6' stroke='%23B8462A' stroke-width='1.6' fill='none'/%3E%3C/svg%3E">
+<link rel="stylesheet" href="assets/style.css?v=20261107b">
+</head>
+<body>
+<main class="doc" id="doc">
+
+  <header class="lesson-head">
+    <div class="kicker"><span class="sec-no">03</span><span>第一部分 · 它由什么拼成</span><span>·</span><span>THE HARNESS</span></div>
+    <h1>harness：套在模型外面的那层</h1>
+    <p class="lede">模型的全部能力，都要靠这层程序翻译成动作。它做六件事，其中两件最容易把项目搞垮。<b>这一页是全课最该精读的一页。</b></p>
+    <div class="meta-row">
+      <span class="pill acc">12 分钟 · 重点</span>
+      <span class="pill">含最小代码</span>
+      <span class="pill">读完能自己写循环</span>
+    </div>
+  </header>
+
+  <div class="whybox">
+    <div class="whybox-h">这一页在能力栈上的位置</div>
+    <div class="whybox-g">
+      <div class="wide"><b>对应环节</b><span>结构层 · 运行时</span></div>
+      <div><b>不学卡在哪</b><span>只会调 API，不会处理工具调用、错误和停止条件，于是做出来的东西「一遇意外就全乱」。</span></div>
+      <div><b>它解决什么</b><span>把运行时拆成六个可分别检查的步骤，并给出最小可用实现。</span></div>
+    </div>
+  </div>
+
+  <h2><span class="n">1</span>马具：套在马上、让它能拉车的那套带子</h2>
+  <div class="sec">
+    <p>harness 直译是「马具」——套在马上、让它能拉车的那些带子。中文常译成「脚手架」或「运行框架」，意思都一样：<b>它是套在模型外面、把模型的力量用出来的那层程序。</b></p>    <p>大白话一句：模型只会「说话」。把它说的话变成真动作的，是外面这层。</p>    <div class="note"><p>这个词现在也指「评测用的统一外壳」——同一个模型换不同 harness，成绩能差出一大截。原因就在这一页讲的六个步骤里。</p></div>
+  </div>
+
+  <h2><span class="n">2</span>一次工具调用，中间有六步</h2>
+  <div class="sec">
+    <p>以「明天去成都要不要带伞」为例，看这层程序到底做了什么：</p>    <div class="tw"><table class="tb">
+      <thead><tr><th style="width:12%">步</th><th style="width:12%">谁做</th><th style="width:46%">在干什么</th><th style="width:30%">最容易出的错</th></tr></thead>
+      <tbody>
+        <tr><td>① 拼装</td><td>你的程序</td><td>把「你是谁 + 聊过什么 + 有哪些工具 + 这次的问题」拼成一段话发过去</td><td>上下文塞爆，或删掉了关键信息</td></tr>
+        <tr><td>② 解析</td><td>你的程序</td><td>从模型的回话里认出「它想调哪个工具、参数是什么」</td><td>模型编了一个你没提供的工具</td></tr>
+        <tr><td>③ 执行</td><td>你的程序</td><td>真的去调接口，拿到「明天下雨 12℃」</td><td>超时、报错、返回乱码</td></tr>
+        <tr><td>④ 回填</td><td>你的程序</td><td>把结果补进对话记录，再发一次</td><td>结果太长被截断，或报错被吞掉</td></tr>
+        <tr><td>⑤ 生成</td><td>模型</td><td>这才说出：明天有小雨，建议带伞</td><td>它无视刚查到的结果，继续说旧结论</td></tr>
+        <tr><td>⑥ 判断停止</td><td>你的程序</td><td>看它这次还要不要用工具；不要就结束</td><td>没有上限，来回调几十次刷爆账单</td></tr>
+      </tbody>
+    </table></div>    <p>顺手还要做：超过 10 轮强制停、接口超时重试、把这次花了多少钱记下来。</p>
+  </div>
+
+  <h2><span class="n">3</span>四个最容易做错的地方</h2>
+  <div class="sec">
+    <p><b>① 拼装：删哪一段没有标准答案。</b>模型能读的字数有限，聊久了塞不下，你得决定删掉哪一段。删早了它忘事，删晚了直接报错。这件事全靠按场景调，没有通用解。</p>    <p><b>② 解析：模型回的不是代码，是一句话。</b>它可能说「我想用查天气这个工具」，也可能直接编一个 JSON。你的程序得从中认出这是一次工具调用，还要防它瞎编——比如它说要用一个你根本没提供的工具。</p>    <p><b>③ 执行：这是唯一真正碰到真实世界的一步。</b>接口会超时、会报错、会返回乱码。模型不知道这些，它只在那儿等。所有失败都得你的程序接住，并且<b>如实告诉它</b>——别把错误吞掉，那会让它以为查成功了。</p>    <p><b>⑥ 判断停止：最容易被忽略、也最容易出事。</b>没有上限，它可能来回调几十次工具，一夜之间把账单刷爆。</p>    <div class="note"><p>同一个模型，harness 写好写坏，效果天差地别。这不是模型不行，是外面这层没做好。</p></div>
+  </div>
+
+  <h2><span class="n">4</span>最小可用的循环长什么样</h2>
+  <div class="sec">
+    <p>抛开框架，一个能跑的最小版本就这么点东西：</p>    <pre class="code">messages = [{&quot;role&quot;:&quot;system&quot;,&quot;content&quot;: ROLE},
+            {&quot;role&quot;:&quot;user&quot;,&quot;content&quot;: question}]
+
+for step in range(MAX_STEPS):        # ⑥ 先有上限
+    resp = model(messages, tools=TOOLS)
+    messages.append(resp)            # ① 记录这一轮
+    calls = parse_calls(resp)        # ② 解析它要调什么
+    if not calls:                    # ⑤ 不调工具 = 可以收工
+        break
+    for c in calls:
+        try:
+            result = run(c)          # ③ 真的执行
+        except Exception as e:
+            result = {&quot;error&quot;: str(e)}   # 失败也要回填，别吞
+        messages.append(tool_msg(c, result))   # ④ 回填
+return messages[-1]</pre>    <p>这二十来行就是全部原理。LangChain、LangGraph 做的事情，是把这二十行里的每一步做得更稳、可观测、能续跑——不是换了一套原理。</p>
+  </div>
+
+  <div class="summary">
+    <h3>本页要点</h3>
+    <ol>
+      <li>harness 是套在模型外面那层程序：模型只说，它负责把话变成动作。</li>
+      <li>一次工具调用六步：拼装 → 解析 → 执行 → 回填 → 生成 → 判断停止。</li>
+      <li>最容易出事的两步是「执行」（失败没人接）和「停止」（没有上限）。</li>
+      <li>二十行代码就是全部原理，框架只是把每一步做稳。</li>
+    </ol>
+  </div>
+
+  <h2><span class="n">★</span>自测</h2>
+  <div class="quiz">
+    <div class="qz">
+      <div class="q"><i>Q1</i>模型输出了一个你没提供的工具名，问题出在哪一步？</div>
+      <div class="opts">
+        <button class="opt"><i>A</i><span>④ 回填</span></button>
+        <button class="opt" data-ok="1"><i>B</i><span>② 解析——你的程序得校验工具名是否在允许列表里</span></button>
+        <button class="opt"><i>C</i><span>③ 执行</span></button>
+        <button class="opt"><i>D</i><span>⑤ 生成</span></button>
+      </div>
+      <div class="ex">模型会编工具。解析这一步必须做白名单校验，不在列表里的直接拒绝并告诉它「没这个工具」。</div>
+    </div>
+    <div class="qz">
+      <div class="q"><i>Q2</i>为什么工具执行失败也要把错误回填给模型？</div>
+      <div class="opts">
+        <button class="opt"><i>A</i><span>为了让日志好看</span></button>
+        <button class="opt" data-ok="1"><i>B</i><span>因为它知道失败了才会换办法；吞掉错误会让它以为查成功了</span></button>
+        <button class="opt"><i>C</i><span>为了省钱</span></button>
+        <button class="opt"><i>D</i><span>因为规范要求</span></button>
+      </div>
+      <div class="ex">回填的内容直接决定它下一轮是变聪明还是变傻。吞掉错误是常见的隐性 bug。</div>
+    </div>
+    <div class="qz">
+      <div class="q"><i>Q3</i>没有轮数上限会怎样？</div>
+      <div class="opts">
+        <button class="opt"><i>A</i><span>没有影响</span></button>
+        <button class="opt" data-ok="1"><i>B</i><span>可能反复调工具几十次，账单被刷爆且任务仍不结束</span></button>
+        <button class="opt"><i>C</i><span>模型会自动停</span></button>
+        <button class="opt"><i>D</i><span>速度变快</span></button>
+      </div>
+      <div class="ex">这是最容易被忽略、也最容易出事的一步。LangGraph 的 recursion_limit 默认 25 就是为了这个。</div>
+    </div>
+  </div>
+  <div class="cite">
+    <b>资料出处</b>
+    ReAct 论文的 Thought-Action-Observation 循环；OpenAI function calling 规范；LangGraph 官方文档对 recursion_limit 的说明。
+  </div>
+
+  <div id="termIndex"></div>
+</main>
+<script src="assets/course.js?v=20261107b"></script>
+</body>
+</html>

@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-page="gloss">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>术语表 · Agent 学习空间</title>
+<meta name="description" content="二十四个词，按出现顺序排。每页遇到不熟的词，回这里查一句就够。">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Ccircle cx='16' cy='16' r='15' fill='%23F6F2EC'/%3E%3Ccircle cx='16' cy='9' r='3.2' fill='none' stroke='%23B8462A' stroke-width='2'/%3E%3Ccircle cx='9' cy='21' r='3.2' fill='none' stroke='%23B8462A' stroke-width='2'/%3E%3Ccircle cx='23' cy='21' r='3.2' fill='none' stroke='%23B8462A' stroke-width='2'/%3E%3Cpath d='M14.2 11.4L10.4 18.2M17.8 11.4l3.8 6.8M12.2 21h7.6' stroke='%23B8462A' stroke-width='1.6' fill='none'/%3E%3C/svg%3E">
+<link rel="stylesheet" href="assets/style.css?v=20261107b">
+</head>
+<body>
+<main class="doc" id="doc">
+
+  <header class="lesson-head">
+    <div class="kicker"><span class="sec-no">B</span><span>附录</span><span>·</span><span>GLOSSARY</span></div>
+    <h1>术语表</h1>
+    <p class="lede">二十四个词，按出现顺序排。每页遇到不熟的词，回这里查一句就够。</p>
+    <div class="meta-row">
+      <span class="pill acc">速查</span>
+      <span class="pill">24 个词</span>
+      <span class="pill">含三组易混</span>
+    </div>
+  </header>
+
+  <div class="whybox">
+    <div class="whybox-h">这一页在能力栈上的位置</div>
+    <div class="whybox-g">
+      <div class="wide"><b>对应环节</b><span>附录 · 词表</span></div>
+      <div><b>不学卡在哪</b><span>术语在不同资料里指不同东西，读到后面忘了前面。</span></div>
+      <div><b>它解决什么</b><span>一页对齐所有关键词，减少来回翻找。</span></div>
+    </div>
+  </div>
+
+  <h2><span class="n">1</span>按出现顺序排</h2>
+  <div class="sec">
+    <div class="tw"><table class="tb">
+      <thead><tr><th style="width:26%">术语</th><th style="width:74%">一句话</th></tr></thead>
+      <tbody>
+        <tr><td><b>Agent</b></td><td>给目标而不是给指令，自己拆步骤、自己动手、直到交付的系统</td></tr>
+        <tr><td><b>Harness</b></td><td>包在模型外面那层调度代码。模型只负责生成，循环、工具、重试都在这一层</td></tr>
+        <tr><td><b>Profile</b></td><td>角色设定：身份、职责、边界，通常写在系统提示里</td></tr>
+        <tr><td><b>Tool / Function calling</b></td><td>模型输出一个结构化请求，由运行时真的去执行，再把结果塞回上下文</td></tr>
+        <tr><td><b>Grounding（接地）</b></td><td>让回答有外部依据。ReAct 查维基就是最朴素的一种</td></tr>
+        <tr><td><b>Hallucination（幻觉）</b></td><td>模型编造看似合理但不存在的事实。接工具与检索是主要解法</td></tr>
+        <tr><td><b>Context Window</b></td><td>一次能塞进模型的文本上限。所有记忆策略都是在跟它抢空间</td></tr>
+        <tr><td><b>Observation（观察）</b></td><td>工具返回的结果，回填进上下文供模型判断下一步</td></tr>
+        <tr><td><b>ReAct</b></td><td>Thought → Action → Observation 交替的循环，几乎所有 Agent 框架的骨架</td></tr>
+        <tr><td><b>CoT</b></td><td>让模型把中间推理写出来再给答案，不改权重只改提示</td></tr>
+        <tr><td><b>Self-Consistency</b></td><td>采样多条推理路径，对答案投票</td></tr>
+        <tr><td><b>Reflexion</b></td><td>把失败写成一段自然语言复盘，存进记忆，下一轮先读</td></tr>
+        <tr><td><b>Episodic Memory</b></td><td>按「经历」存的记忆——某次做了什么、结果如何。Reflexion 的复盘就存在这儿</td></tr>
+        <tr><td><b>Semantic Memory</b></td><td>按「事实」存的记忆——规则、偏好、领域知识，与具体哪次经历无关</td></tr>
+        <tr><td><b>MemGPT</b></td><td>把上下文当内存、外部存储当硬盘，由模型自己决定换入换出</td></tr>
+        <tr><td><b>ToT</b></td><td>每步生成多个候选、打分、剪枝、可回溯，把推理变成搜索</td></tr>
+        <tr><td><b>LATS</b></td><td>蒙特卡洛树搜索 + 环境反馈 + 反思，把搜索与行动合一</td></tr>
+        <tr><td><b>Checkpoint</b></td><td>每走完一步存一次档，使任务能断点续跑、能等人、能回滚</td></tr>
+        <tr><td><b>Recursion limit</b></td><td>框架对循环步数的硬上限（LangGraph 默认 25），防跑飞</td></tr>
+        <tr><td><b>Reducer</b></td><td>多个节点同时改同一字段时的合并规则</td></tr>
+        <tr><td><b>Handoff</b></td><td>一个 Agent 把任务连同上下文转交给另一个</td></tr>
+        <tr><td><b>Multi-agent</b></td><td>多个角色分工协作。形态有双人对话、群聊、层级三种</td></tr>
+        <tr><td><b>Token</b></td><td>计费与容量单位。中文大约一个字算一到两个</td></tr>
+        <tr><td><b>RAG</b></td><td>先检索资料再回答，不让模型凭记忆瞎说</td></tr>
+      </tbody>
+    </table></div>
+  </div>
+
+  <h2><span class="n">2</span>三组最容易混的</h2>
+  <div class="sec">
+    <div class="def">
+      <div class="def-h">Prompt / Context / Memory<span class="loc">三个词常被当成一个</span></div>
+      <p><b>Prompt</b> 是这次递给它的那叠纸；<b>Context</b> 是这叠纸里它真的能读到的部分；<b>Memory</b> 是纸外面那个库，需要时才取一页进来。</p>
+    </div>    <div class="def">
+      <div class="def-h">Workflow / Agent / RPA<span class="loc">分界在「谁决定下一步」</span></div>
+      <p><b>Workflow</b> 是流程写死；<b>Agent</b> 是下一步由它判断；<b>RPA</b> 是录好的操作回放，遇到没录过的界面就卡住。</p>
+    </div>    <div class="def">
+      <div class="def-h">CoT / ReAct / Reflexion / ToT<span class="loc">四个不同位置的补丁</span></div>
+      <p>四个都在补「想得更好」，但补的位置不同：<b>CoT</b> 补「不写步骤」，<b>ReAct</b> 补「不接地」，<b>Reflexion</b> 补「不记教训」，<b>ToT</b> 补「不回头」。</p>
+    </div>
+  </div>
+
+  <div class="summary">
+    <h3>本页要点</h3>
+    <ol>
+      <li>Harness 是外面那层程序，Tool 是它能按的按钮，Grounding 是答案有出处。</li>
+      <li>Prompt / Context / Memory 三者的区别：递进去的、读得到的、存在外面的。</li>
+      <li>CoT、ReAct、Reflexion、ToT 是四个不同位置的补丁，不是四个版本的同一样东西。</li>
+    </ol>
+  </div>
+
+  <h2><span class="n">★</span>自测</h2>
+  <div class="quiz">
+    <div class="qz">
+      <div class="q"><i>Q1</i>Harness 和 Tool 的区别是什么？</div>
+      <div class="opts">
+        <button class="opt"><i>A</i><span>没有区别</span></button>
+        <button class="opt" data-ok="1"><i>B</i><span>Harness 是调度循环的那层程序，Tool 是它调用的具体能力</span></button>
+        <button class="opt"><i>C</i><span>Harness 是硬件，Tool 是软件</span></button>
+        <button class="opt"><i>D</i><span>Harness 只用于评测</span></button>
+      </div>
+      <div class="ex">Harness 决定「怎么循环、怎么重试、什么时候停」，Tool 是循环里被调用的东西。</div>
+    </div>
+    <div class="qz">
+      <div class="q"><i>Q2</i>Episodic Memory 存的是什么？</div>
+      <div class="opts">
+        <button class="opt"><i>A</i><span>规则与偏好</span></button>
+        <button class="opt" data-ok="1"><i>B</i><span>某次经历：做了什么、结果如何</span></button>
+        <button class="opt"><i>C</i><span>模型权重</span></button>
+        <button class="opt"><i>D</i><span>工具清单</span></button>
+      </div>
+      <div class="ex">Reflexion 的复盘就是典型的情景记忆——它记的是一次具体的失败，不是通用规则。</div>
+    </div>
+  </div>
+  <div class="cite">
+    <b>资料出处</b>
+    Lilian Weng 四件套；Russell & Norvig 定义；各论文原始术语。
+  </div>
+
+  <div id="termIndex"></div>
+</main>
+<script src="assets/course.js?v=20261107b"></script>
+</body>
+</html>

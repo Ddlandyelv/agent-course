@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-page="build">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>真要动手做，四个阶段 · Agent 学习空间</title>
+<meta name="description" content="从零到能跑，按实际顺序四步：想清楚、搭骨架、让它可靠、让它变好。真正劝退人的是第三步——顺利时能跑，一遇报错就全乱。">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Ccircle cx='16' cy='16' r='15' fill='%23F6F2EC'/%3E%3Ccircle cx='16' cy='9' r='3.2' fill='none' stroke='%23B8462A' stroke-width='2'/%3E%3Ccircle cx='9' cy='21' r='3.2' fill='none' stroke='%23B8462A' stroke-width='2'/%3E%3Ccircle cx='23' cy='21' r='3.2' fill='none' stroke='%23B8462A' stroke-width='2'/%3E%3Cpath d='M14.2 11.4L10.4 18.2M17.8 11.4l3.8 6.8M12.2 21h7.6' stroke='%23B8462A' stroke-width='1.6' fill='none'/%3E%3C/svg%3E">
+<link rel="stylesheet" href="assets/style.css?v=20261107b">
+</head>
+<body>
+<main class="doc" id="doc">
+
+  <header class="lesson-head">
+    <div class="kicker"><span class="sec-no">14</span><span>第四部分 · 动手与选型</span><span>·</span><span>BUILD IT</span></div>
+    <h1>真要动手做，四个阶段</h1>
+    <p class="lede">从零到能跑，按实际顺序四步：想清楚、搭骨架、让它可靠、让它变好。真正劝退人的是第三步——顺利时能跑，一遇报错就全乱。</p>
+    <div class="meta-row">
+      <span class="pill acc">12 分钟</span>
+      <span class="pill">含验收清单</span>
+      <span class="pill">可直接照做</span>
+    </div>
+  </header>
+
+  <div class="whybox">
+    <div class="whybox-h">这一页在能力栈上的位置</div>
+    <div class="whybox-g">
+      <div class="wide"><b>对应环节</b><span>工程层 · 落地路径</span></div>
+      <div><b>不学卡在哪</b><span>一上手就接十个工具、写一堆提示，结果跑不通也说不清哪坏了。</span></div>
+      <div><b>它解决什么</b><span>给出有明确验收标准的四步路径，每一步都知道「做到什么程度算过」。</span></div>
+    </div>
+  </div>
+
+  <h2><span class="n">1</span>四个阶段，每步都标了会卡在哪</h2>
+  <div class="sec">
+    <p>从零到能跑，按实际顺序是四步。真正劝退人的不是第一步，是第三步。</p>
+  </div>
+
+  <h2><span class="n">2</span>阶段一 · 想清楚</h2>
+  <div class="sec">
+    <ol>
+      <li>写清楚它能碰哪些数据、不能碰哪些。</li>
+      <li>用一句话写出「什么样算做对了」。</li>
+      <li>想好它做错了，用户看到什么。</li>
+    </ol>    <p><b>卡点：</b>边界没定，后面全在改。</p>    <div class="note"><p>第三句最容易被跳过。它做错了、但你还得给用户一个交代——这句话没想清，后面所有错误处理都会写成「报错，请重试」。</p></div>
+  </div>
+
+  <h2><span class="n">3</span>阶段二 · 搭骨架</h2>
+  <div class="sec">
+    <ol>
+      <li>写身份说明，别超过一屏。</li>
+      <li>只接一个最必要的工具，跑通。</li>
+      <li>把「发出去 — 拿回来 — 再发」走一遍。</li>
+    </ol>    <p><b>卡点：</b>一上来接十个工具，全调不对。</p>    <p>这一步的验收标准很土但很准：<b>同一句话问三遍，它选的是不是同一个工具。</b>不稳定，说明工具描述或身份说明有问题，先别往下走。</p>
+  </div>
+
+  <h2><span class="n">4</span>阶段三 · 让它可靠</h2>
+  <div class="sec">
+    <ol>
+      <li>设轮数上限和超时，别让它跑飞。</li>
+      <li>工具报错要原样告诉它，别吞掉。</li>
+      <li>上下文快满了，定好先丢哪段。</li>
+    </ol>    <p><b>卡点：</b>只在顺利时测过。</p>    <div class="tw"><table class="tb">
+      <thead><tr><th style="width:20%">要防的意外</th><th style="width:38%">怎么造这个意外</th><th style="width:42%">期望行为</th></tr></thead>
+      <tbody>
+        <tr><td>接口超时</td><td>把工具故意 sleep 30 秒</td><td>超时后提示模型换方法，而不是卡死</td></tr>
+        <tr><td>返回空</td><td>工具返回空数组</td><td>它应说出「没查到」，而不是编一个</td></tr>
+        <tr><td>参数非法</td><td>传一个不存在的城市名</td><td>它应重试或追问，而不是硬编</td></tr>
+        <tr><td>上下文爆</td><td>连续灌 50 轮对话</td><td>有压缩或丢弃策略，不报错崩掉</td></tr>
+      </tbody>
+    </table></div>
+  </div>
+
+  <h2><span class="n">5</span>阶段四 · 让它变好</h2>
+  <div class="sec">
+    <ol>
+      <li>攒 20 个真实问题当考卷。</li>
+      <li>每次改动都重跑，看是变好还是变坏。</li>
+      <li>记日志：哪一步卡住、花了多少钱。</li>
+    </ol>    <p><b>卡点：</b>改完凭感觉说「好像好点了」。</p>    <p>20 个问题不用多，但必须是真的——从用户实际问过的里面挑。自己编的题会系统性偏简单，测不出问题。</p>
+  </div>
+
+  <h2><span class="n">6</span>最小可用版，只需要三样</h2>
+  <div class="sec">
+    <ol>
+      <li>一段话说清它是谁、要干什么。</li>
+      <li>一个工具，哪怕只是「查数据库」这一件。</li>
+      <li>一个循环：发出去 → 看它要不要动手 → 动手 → 塞回去 → 再发一次，最多十轮。</li>
+    </ol>    <div class="note"><p>这就已经是 Agent 了。剩下所有工作，都是在这三样上补漏洞。</p></div>    <p><b>如果今天只记一件事，记这个：</b>模型是租来的大脑，Agent 是你亲手搭的身体。</p>
+  </div>
+
+  <div class="summary">
+    <h3>本页要点</h3>
+    <ol>
+      <li>四阶段：想清楚（边界与成功标准）、搭骨架（一个工具）、让它可靠（失败当常态）、让它变好（20 个真题）。</li>
+      <li>劝退人的是第三阶段：顺利时能跑，一遇接口报错就全乱。</li>
+      <li>最小可用版只要三样：身份说明、一个工具、一个最多十轮的循环。</li>
+    </ol>
+  </div>
+
+  <h2><span class="n">★</span>自测</h2>
+  <div class="quiz">
+    <div class="qz">
+      <div class="q"><i>Q1</i>「攒 20 个真实问题当考卷」为什么必须是真的问题？</div>
+      <div class="opts">
+        <button class="opt"><i>A</i><span>因为编题太花时间</span></button>
+        <button class="opt" data-ok="1"><i>B</i><span>因为自己编的题会系统性偏简单，测不出真实失效</span></button>
+        <button class="opt"><i>C</i><span>因为用户会检查</span></button>
+        <button class="opt"><i>D</i><span>因为数量不够</span></button>
+      </div>
+      <div class="ex">评测集的质量决定了你能不能看出改动是好是坏。偏简单的题会让所有改法都「看起来有效」。</div>
+    </div>
+    <div class="qz">
+      <div class="q"><i>Q2</i>为什么阶段二只接一个工具？</div>
+      <div class="opts">
+        <button class="opt"><i>A</i><span>因为框架限制</span></button>
+        <button class="opt" data-ok="1"><i>B</i><span>因为工具越多，模型选错的机会越多，先把一个跑稳再扩</span></button>
+        <button class="opt"><i>C</i><span>因为省钱</span></button>
+        <button class="opt"><i>D</i><span>因为用户只需要一个</span></button>
+      </div>
+      <div class="ex">每多一个工具就多一个选错的机会。一个都调不准，十个只会更乱。</div>
+    </div>
+  </div>
+  <div class="cite">
+    <b>资料出处</b>
+    工程实践总结；ReAct 循环的最小实现；评测集构建经验。
+  </div>
+
+  <div id="termIndex"></div>
+</main>
+<script src="assets/course.js?v=20261107b"></script>
+</body>
+</html>

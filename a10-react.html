@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-page="react">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>让思考接上行动：ReAct · Agent 学习空间</title>
+<meta name="description" content="想一步、做一步、看一眼，再接着想。这一页讲清它为什么成了所有 Agent 框架的默认骨架，以及它会在哪四种地方跑偏。">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Ccircle cx='16' cy='16' r='15' fill='%23F6F2EC'/%3E%3Ccircle cx='16' cy='9' r='3.2' fill='none' stroke='%23B8462A' stroke-width='2'/%3E%3Ccircle cx='9' cy='21' r='3.2' fill='none' stroke='%23B8462A' stroke-width='2'/%3E%3Ccircle cx='23' cy='21' r='3.2' fill='none' stroke='%23B8462A' stroke-width='2'/%3E%3Cpath d='M14.2 11.4L10.4 18.2M17.8 11.4l3.8 6.8M12.2 21h7.6' stroke='%23B8462A' stroke-width='1.6' fill='none'/%3E%3C/svg%3E">
+<link rel="stylesheet" href="assets/style.css?v=20261107b">
+</head>
+<body>
+<main class="doc" id="doc">
+
+  <header class="lesson-head">
+    <div class="kicker"><span class="sec-no">06</span><span>第二部分 · 从会说话到会动手</span><span>·</span><span>REACT</span></div>
+    <h1>让思考接上行动：ReAct</h1>
+    <p class="lede">想一步、做一步、看一眼，再接着想。这一页讲清它为什么成了所有 Agent 框架的默认骨架，以及它会在哪四种地方跑偏。</p>
+    <div class="meta-row">
+      <span class="pill acc">10 分钟 · 重点</span>
+      <span class="pill">含失败模式</span>
+      <span class="pill">全课骨架</span>
+    </div>
+  </header>
+
+  <div class="whybox">
+    <div class="whybox-h">这一页在能力栈上的位置</div>
+    <div class="whybox-g">
+      <div class="wide"><b>对应环节</b><span>能力层 · 行动 + 推理的耦合</span></div>
+      <div><b>不学卡在哪</b><span>只会让模型「一次想完再输出」，于是遇到需要查证的任务就一路编到底。</span></div>
+      <div><b>它解决什么</b><span>给出可循环、可纠错的最小智能行为。</span></div>
+    </div>
+  </div>
+
+  <h2><span class="n">1</span>缺什么：光想会脱离事实，光做又没计划</h2>
+  <div class="sec">
+    <p>纯 CoT 只能靠模型脑子里记的东西——记错了就一路错到底，没人纠。纯行动又没有规划，走一步算一步。</p>    <p>2022 年 10 月，Yao 等人把两者交替起来：先写 Thought，再调 Action（比如查维基），拿到 Observation 再接着想。</p>    <div class="flow"><div class="fn"><b>Thought</b>想下一步</div><div class="fa">→</div><div class="fn"><b>Action</b>调工具</div><div class="fa">→</div><div class="fn"><b>Observation</b>看结果</div><div class="fa">→</div><div class="fn"><b>Thought</b>修正后继续</div></div>    <p>关键在第三步：<b>观察结果会当场推翻它上一句的错判。</b>这是 CoT 做不到的——它没有外部输入。</p>
+  </div>
+
+  <h2><span class="n">2</span>为什么它是所有 Agent 框架的默认骨架</h2>
+  <div class="sec">
+    <p>因为它把一个很难的问题拆成了两个简单的问题：</p>    <div class="tw"><table class="tb">
+      <thead><tr><th style="width:42%">原本的难题</th><th style="width:58%">ReAct 的拆法</th></tr></thead>
+      <tbody>
+        <tr><td>一次想清楚整条路</td><td>只想下一步，走完再看</td></tr>
+        <tr><td>判断自己想的对不对</td><td>让环境告诉它对不对</td></tr>
+        <tr><td>计划赶不上变化</td><td>每轮都重排，计划是临时的</td></tr>
+      </tbody>
+    </table></div>    <p>LangChain 的 create_agent、LangGraph 的 create_react_agent，底下跑的都是这个循环。可以说整个 Agent 工程就是从这篇开始的。</p>    <div class="def">
+      <div class="def-h">关键数字<span class="loc">arXiv:2210.03629 · ICLR 2023 Oral</span></div>
+      <p>ALFWorld 绝对成功率 <b>+34%</b>、WebShop <b>+10%</b>（对比只用行动的方法）；HotPotQA 上的幻觉比纯 CoT 明显少。</p>
+    </div>
+  </div>
+
+  <h2><span class="n">3</span>它的失败模式</h2>
+  <div class="sec">
+    <p>ReAct 好用在简单，坏也坏在简单。四种常见跑偏：</p>    <div class="tw"><table class="tb">
+      <thead><tr><th style="width:20%">失败模式</th><th style="width:44%">表现</th><th style="width:36%">怎么防</th></tr></thead>
+      <tbody>
+        <tr><td>绕圈</td><td>反复查同一个东西，得到同样结果还在查</td><td>检测重复动作，命中就强制换策略或停</td></tr>
+        <tr><td>越走越远</td><td>为了查 A 去查 B，为了 B 去查 C，忘了原任务</td><td>每 3 轮把原始目标复述一遍进上下文</td></tr>
+        <tr><td>观察污染</td><td>工具返回的无关内容太多，把关键信息挤掉</td><td>回填前做摘要或截断</td></tr>
+        <tr><td>假装看过</td><td>没调工具，直接说自己查了</td><td>记录真实的调用日志，和它的自述比对</td></tr>
+      </tbody>
+    </table></div>    <p>代价：轮数不可控，长任务容易绕圈把自己绕进去；每一轮都是一次完整调用，成本线性上涨。</p>
+  </div>
+
+  <h2><span class="n">4</span>今天的对应</h2>
+  <div class="sec">
+    <p>几乎所有 Agent 产品的主循环都是 ReAct 的变体。差别只在：<b>给它什么工具、允许它走多少轮、失败时怎么收场。</b></p>    <div class="note"><p>判断一个 Agent 产品好不好，先看它的轮数上限和重复动作检测——这两样有没有，基本能看出是「演示」还是「能用」。</p></div>
+  </div>
+
+  <div class="summary">
+    <h3>本页要点</h3>
+    <ol>
+      <li>ReAct = Thought → Action → Observation 交替，用真实结果修正下一步。</li>
+      <li>价值在「接地」：答案来自刚查到的内容，不是训练时的记忆。</li>
+      <li>ALFWorld +34%、WebShop +10%，是所有 Agent 框架的默认骨架。</li>
+      <li>四种跑偏：绕圈、越走越远、观察污染、假装看过。</li>
+    </ol>
+  </div>
+
+  <h2><span class="n">★</span>自测</h2>
+  <div class="quiz">
+    <div class="qz">
+      <div class="q"><i>Q1</i>ReAct 相比 CoT，最本质的增量是什么？</div>
+      <div class="opts">
+        <button class="opt"><i>A</i><span>更多的推理步骤</span></button>
+        <button class="opt" data-ok="1"><i>B</i><span>引入了外部观察，能当场推翻自己的错判</span></button>
+        <button class="opt"><i>C</i><span>更大的上下文</span></button>
+        <button class="opt"><i>D</i><span>更快的速度</span></button>
+      </div>
+      <div class="ex">CoT 只在脑子里想，错了没人纠。ReAct 每走一步都能拿到环境的反馈，这是「接地」的来源。</div>
+    </div>
+    <div class="qz">
+      <div class="q"><i>Q2</i>它反复查同一个东西、结果一样还在查，属于哪种失败？</div>
+      <div class="opts">
+        <button class="opt"><i>A</i><span>越走越远</span></button>
+        <button class="opt" data-ok="1"><i>B</i><span>绕圈</span></button>
+        <button class="opt"><i>C</i><span>观察污染</span></button>
+        <button class="opt"><i>D</i><span>假装看过</span></button>
+      </div>
+      <div class="ex">绕圈的检测方法很机械：记录最近的（工具, 参数）组合，重复出现就强制换策略。</div>
+    </div>
+  </div>
+  <div class="cite">
+    <b>资料出处</b>
+    Yao et al.《ReAct: Synergizing Reasoning and Acting in Language Models》(arXiv:2210.03629)。
+  </div>
+
+  <div id="termIndex"></div>
+</main>
+<script src="assets/course.js?v=20261107b"></script>
+</body>
+</html>

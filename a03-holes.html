@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-page="holes">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>大模型自己缺的六样东西 · Agent 学习空间</title>
+<meta name="description" content="它很聪明，但没有手、没有记性、不知道现在几点、也分不清自己是对是错。这六缺排一次序，你就知道 Agent 每个零件到底在补什么。">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Ccircle cx='16' cy='16' r='15' fill='%23F6F2EC'/%3E%3Ccircle cx='16' cy='9' r='3.2' fill='none' stroke='%23B8462A' stroke-width='2'/%3E%3Ccircle cx='9' cy='21' r='3.2' fill='none' stroke='%23B8462A' stroke-width='2'/%3E%3Ccircle cx='23' cy='21' r='3.2' fill='none' stroke='%23B8462A' stroke-width='2'/%3E%3Cpath d='M14.2 11.4L10.4 18.2M17.8 11.4l3.8 6.8M12.2 21h7.6' stroke='%23B8462A' stroke-width='1.6' fill='none'/%3E%3C/svg%3E">
+<link rel="stylesheet" href="assets/style.css?v=20261107b">
+</head>
+<body>
+<main class="doc" id="doc">
+
+  <header class="lesson-head">
+    <div class="kicker"><span class="sec-no">0.3</span><span>第零幕 · 它到底是什么</span><span>·</span><span>WHAT THE MODEL LACKS</span></div>
+    <h1>大模型自己缺的六样东西</h1>
+    <p class="lede">它很聪明，但没有手、没有记性、不知道现在几点、也分不清自己是对是错。这六缺排一次序，你就知道 Agent 每个零件到底在补什么。</p>
+    <div class="meta-row">
+      <span class="pill acc">7 分钟</span>
+      <span class="pill">零基础</span>
+      <span class="pill">含优先级排序</span>
+    </div>
+  </header>
+
+  <div class="whybox">
+    <div class="whybox-h">这一页在能力栈上的位置</div>
+    <div class="whybox-g">
+      <div class="wide"><b>对应环节</b><span>定义层 · 为什么要外面那层</span></div>
+      <div><b>不学卡在哪</b><span>把 Agent 理解成「更强的模型」，于是以为换个更大的模型就能解决工程问题。</span></div>
+      <div><b>它解决什么</b><span>把「缺什么」和「补什么零件」对上号，后面每页都有了归属。</span></div>
+    </div>
+  </div>
+
+  <h2><span class="n">1</span>大模型自己缺的六样</h2>
+  <div class="sec">
+    <p>为什么非要给它加外面那层？因为单靠模型，有六件事它做不到：</p>    <div class="tw"><table class="tb">
+      <thead><tr><th style="width:16%">缺什么</th><th style="width:42%">具体表现</th><th style="width:42%">Agent 怎么补</th></tr></thead>
+      <tbody>
+        <tr><td><b>会编</b></td><td>一本正经地说不存在的事实</td><td>要求它先查再答，答案带出处</td></tr>
+        <tr><td><b>不知道现在</b></td><td>训练数据有截止日期</td><td>接搜索 API，现查现用</td></tr>
+        <tr><td><b>算不准</b></td><td>多位数乘法容易错</td><td>把计算丢给代码解释器</td></tr>
+        <tr><td><b>没有手</b></td><td>只能说「我无法购买咖啡」</td><td>接下单、支付这类真实接口</td></tr>
+        <tr><td><b>记不住</b></td><td>换个会话就忘了你是谁</td><td>外部记忆库，按需检索</td></tr>
+        <tr><td><b>做不长</b></td><td>任务一长就跑到一半停住</td><td>规划 + 断点续跑</td></tr>
+      </tbody>
+    </table></div>    <p>所以有个说法很准：<b>如果大模型是大脑，Agent 就是小脑加手脚。</b>大脑负责想，小脑负责把想法变成协调的动作，手脚负责真的碰到世界。</p>
+  </div>
+
+  <h2><span class="n">2</span>六缺里，哪一个最要命</h2>
+  <div class="sec">
+    <p>六个不是并列的。按「不补就会出事」排序：</p>    <ol>
+      <li><b>没有手</b>——不补，它永远只能输出文字，做不了任何事。这是 Agent 存在的理由。</li>
+      <li><b>会编</b>——不补，它会用最自信的语气给你错的结果，而且你很难发现。</li>
+      <li><b>记不住</b>——不补，它会在同一个坑里反复摔，长任务永远做不完。</li>
+      <li><b>做不长</b>——不补，任务一到十步以上就断在半路。</li>
+      <li><b>不知道现在</b>——不补，所有涉及时效的问题都只能靠猜。</li>
+      <li><b>算不准</b>——不补，数字类任务不可信，但这个最容易用工具绕过。</li>
+    </ol>    <div class="note"><p>「算不准」排在最后，不是因为它不严重，而是因为它最好修：给一个计算器就解决了。难修的是「会编」和「记不住」，它们需要外部信号和检索策略，不是加个接口能搞定。</p></div>
+  </div>
+
+  <h2><span class="n">3</span>这六缺决定了后面每一页在讲什么</h2>
+  <div class="sec">
+    <div class="tw"><table class="tb">
+      <thead><tr><th style="width:34%">缺的东西</th><th style="width:66%">对应本课哪几页</th></tr></thead>
+      <tbody>
+        <tr><td>会编 / 不知道现在</td><td>05 工具调用、06 ReAct（先查再答）</td></tr>
+        <tr><td>没有手</td><td>05 工具调用、03 harness（把话变成动作）</td></tr>
+        <tr><td>记不住</td><td>08 记忆（三层记忆与检索策略）</td></tr>
+        <tr><td>做不长</td><td>09 搜索与回溯、07 反思（错了重来）</td></tr>
+        <tr><td>算不准</td><td>05 工具调用（把计算外包出去）</td></tr>
+      </tbody>
+    </table></div>    <p>换句话说，Agent 的每一个零件，都是为了补上这六缺里的某一缺。记住这张对照表，后面读到任何新框架，都能立刻问一句：它补的是哪一缺？</p>
+  </div>
+
+  <div class="summary">
+    <h3>本页要点</h3>
+    <ol>
+      <li>大模型自己缺六样：会编、不知道现在、算不准、没有手、记不住、做不长。</li>
+      <li>最要命的是「没有手」和「会编」，最好修的是「算不准」。</li>
+      <li>Agent 的每个零件都在补其中一缺——新框架也可以用这张表来定位。</li>
+    </ol>
+  </div>
+
+  <h2><span class="n">★</span>自测</h2>
+  <div class="quiz">
+    <div class="qz">
+      <div class="q"><i>Q1</i>六个缺口里，为什么「算不准」反而最好解决？</div>
+      <div class="opts">
+        <button class="opt"><i>A</i><span>因为模型数学能力在变强</span></button>
+        <button class="opt" data-ok="1"><i>B</i><span>因为把计算外包给代码解释器就能绕过，不需要外部信号或检索策略</span></button>
+        <button class="opt"><i>C</i><span>因为用户不在意数字</span></button>
+        <button class="opt"><i>D</i><span>因为它出现频率最低</span></button>
+      </div>
+      <div class="ex">难修的是需要外部信号的（会编、记不住）。算不准只要给个工具就行，属于工程上最容易补的一类。</div>
+    </div>
+    <div class="qz">
+      <div class="q"><i>Q2</i>「没有手」具体指什么？</div>
+      <div class="opts">
+        <button class="opt"><i>A</i><span>模型不能输出文字</span></button>
+        <button class="opt" data-ok="1"><i>B</i><span>模型只能说「我无法完成」，不能真的调用接口改变外部状态</span></button>
+        <button class="opt"><i>C</i><span>模型不能画图</span></button>
+        <button class="opt"><i>D</i><span>模型不能联网</span></button>
+      </div>
+      <div class="ex">这是 Agent 存在的根本理由。工具调用就是把「说」变成「做」的那一步。</div>
+    </div>
+  </div>
+  <div class="cite">
+    <b>资料出处</b>
+    大模型能力边界综述；Toolformer、ReAct 等论文对幻觉与接地的讨论。
+  </div>
+
+  <div id="termIndex"></div>
+</main>
+<script src="assets/course.js?v=20261107b"></script>
+</body>
+</html>

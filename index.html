@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-page="index">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Agent 学习空间：从会说话到会行动 · Agent 学习空间</title>
+<meta name="description" content="一条从定义走到落地的路径。<b>先讲清它凭什么叫 Agent</b>，再按「结构 → 能力 → 协作 → 工程 → 论文索引」五段展开，每一">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Ccircle cx='16' cy='16' r='15' fill='%23F6F2EC'/%3E%3Ccircle cx='16' cy='9' r='3.2' fill='none' stroke='%23B8462A' stroke-width='2'/%3E%3Ccircle cx='9' cy='21' r='3.2' fill='none' stroke='%23B8462A' stroke-width='2'/%3E%3Ccircle cx='23' cy='21' r='3.2' fill='none' stroke='%23B8462A' stroke-width='2'/%3E%3Cpath d='M14.2 11.4L10.4 18.2M17.8 11.4l3.8 6.8M12.2 21h7.6' stroke='%23B8462A' stroke-width='1.6' fill='none'/%3E%3C/svg%3E">
+<link rel="stylesheet" href="assets/style.css?v=20261107b">
+</head>
+<body>
+<main class="doc" id="doc">
+
+  <header class="lesson-head">
+    <div class="kicker"><span class="sec-no">00</span><span>开始</span><span>·</span><span>READ ME FIRST</span></div>
+    <h1>Agent 学习空间：从会说话到会行动</h1>
+    <p class="lede">一条从定义走到落地的路径。<b>先讲清它凭什么叫 Agent</b>，再按「结构 → 能力 → 协作 → 工程 → 论文索引」五段展开，每一页都标明它在能力栈上的位置。</p>
+    <div class="meta-row">
+      <span class="pill acc">23 页 · 约 5 小时</span>
+      <span class="pill">不用会写代码</span>
+      <span class="pill">含 13 篇论文索引</span>
+    </div>
+  </header>
+
+  <div class="whybox">
+    <div class="whybox-h">这一页在能力栈上的位置</div>
+    <div class="whybox-g">
+      <div class="wide"><b>对应环节</b><span>全课地图 · 从这里开始</span></div>
+      <div><b>不学卡在哪</b><span>不知道从哪里读起，或者读了一堆碎片却串不起来。</span></div>
+      <div><b>它解决什么</b><span>给出三条不同基础的学习路径，以及每一页在能力栈上的位置。</span></div>
+    </div>
+  </div>
+
+  <h2><span class="n">1</span>读 Agent 的三个断点</h2>
+  <div class="sec">
+    <p>Agent 的资料现在多到读不完，但大多数在犯同一个毛病：<b>把「它是什么」当成已知</b>。一上来就是 ReAct、LangGraph、多智能体，却说不清它和「会聊天的模型」到底差在哪。</p>    <p>这套课假设你<b>从零开始</b>，先补三个最容易断的地方：</p>    <div class="tw"><table class="tb">
+      <thead><tr><th style="width:28%">断点</th><th style="width:46%">表现</th><th style="width:26%">在哪一页补</th></tr></thead>
+      <tbody>
+        <tr><td><b>不知道它凭什么叫 Agent</b></td><td>以为只要接了 API、套了提示词就是 Agent，说不清和 RPA、Copilot 的分界</td><td>0.1–0.4</td></tr>
+        <tr><td><b>不知道那些论文在补什么洞</b></td><td>CoT、ReAct、Reflexion 都听过，但不知道各自修的是哪个毛病</td><td>04–10</td></tr>
+        <tr><td><b>不知道什么时候该拆成多个</b></td><td>任务一复杂就想上多智能体，结果开销翻倍、错误更难定位</td><td>11–13</td></tr>
+      </tbody>
+    </table></div>    <p>对应的做法是：<b>每个概念先讲「它解决什么问题」，再讲「怎么实现」</b>；每一页都标出它在能力栈（模型 → 提示 → 工具 → 记忆 → 规划 → 协作 → 评测）上的位置。</p>
+  </div>
+
+  <h2><span class="n">2</span>三种学法</h2>
+  <div class="sec">
+    <div class="tw"><table class="tb">
+      <thead><tr><th style="width:24%">你的情况</th><th style="width:56%">建议路线</th><th style="width:20%">用时</th></tr></thead>
+      <tbody>
+        <tr><td><b>完全没接触过</b><br><span style="font-size:12px">但用过 ChatGPT</span></td><td><b>按 0.1 → 16 顺序全读</b>。第零幕四页别跳，它们建立了后面所有判断的参照物。04–10 是论文线，建议连读，它们是一条链。</td><td><span style="font-family:var(--mono)">5 小时</span></td></tr>
+        <tr><td><b>会写提示词，想上手做</b><br><span style="font-size:12px">跑通过 API 调用</span></td><td>0.3、0.4 扫一眼 → <b>03 harness 精读</b> → 06 ReAct → 08 记忆 → <b>14 动手四阶段</b> → 15 选型。</td><td><span style="font-family:var(--mono)">2.5 小时</span></td></tr>
+        <tr><td><b>只想搞懂架构</b><br><span style="font-size:12px">不关心调参</span></td><td>0.4 → 01 → 03 → 10 → 12 → 13 → 15，七页看完能画出完整结构并说清各层的取舍。</td><td><span style="font-family:var(--mono)">2 小时</span></td></tr>
+      </tbody>
+    </table></div>    <div class="note"><p>这一版把原来那个单页的长文拆成了 23 页：一页只讲一件事，讲完给自测。读的时候可以放心跳，每页开头都有定位块，告诉你这页在整条链上的哪一段。</p></div>
+  </div>
+
+  <h2><span class="n">3</span>七个部分，对应一层能力</h2>
+  <div class="sec">
+    <div class="tw"><table class="tb">
+      <thead><tr><th style="width:26%">部分</th><th style="width:20%">对应能力</th><th style="width:54%">解决的问题</th></tr></thead>
+      <tbody>
+        <tr><td><b>第零幕</b>（0.1–0.4）</td><td>定义</td><td>它凭什么叫 Agent，和另外三样东西差在哪，大模型缺什么</td></tr>
+        <tr><td><b>第一部分</b>（01–03）</td><td>结构</td><td>一个 Agent 由哪些零件拼成，harness 那层到底在干什么</td></tr>
+        <tr><td><b>第二部分</b>（04–10）</td><td>能力</td><td>怎么让它会推理、会调工具、会反思、会记事、会搜索</td></tr>
+        <tr><td><b>第三部分</b>（11–13）</td><td>协作</td><td>一个不够用时怎么拆，拆完付出的代价是什么</td></tr>
+        <tr><td><b>第四部分</b>（14–16）</td><td>工程</td><td>从零到能跑要经过哪四个阶段，框架怎么选</td></tr>
+        <tr><td><b>第五部分</b>（A）</td><td>索引</td><td>十三篇核心论文，按「你手上的毛病」查</td></tr>
+        <tr><td><b>附录</b>（B）</td><td>词表</td><td>Harness、Grounding、Episodic Memory 这些词到底指什么</td></tr>
+      </tbody>
+    </table></div>    <p><b>建议先读 0.4 再跳任何地方</b>：后面每一页都会用到「四件套」（LLM + 记忆 + 规划 + 工具）这个拆法，跳过之后读到 ReAct、MemGPT 会缺少参照物。</p>
+  </div>
+
+  <h2><span class="n">4</span>全部页面</h2>
+  <div class="sec">
+<div class="idx-grid"><a href="a01-old.html"><b>0.1</b><span>Agent 这个词，比大模型老三十多年</span></a><a href="a02-vs.html"><b>0.2</b><span>它和另外三样东西差在哪</span></a><a href="a03-holes.html"><b>0.3</b><span>大模型自己缺的六样东西</span></a><a href="a04-def.html"><b>0.4</b><span>两个定义，一个分水岭</span></a><a href="a05-blocks.html"><b>01</b><span>六块积木，模型只占一块</span></a><a href="a06-shapes.html"><b>02</b><span>结构就三种，按三个问题分</span></a><a href="a07-harness.html"><b>03</b><span>harness：套在模型外面的那层</span></a><a href="a08-cot.html"><b>04</b><span>先让模型把话说完：CoT 与自洽</span></a><a href="a09-tools.html"><b>05</b><span>让它学会用工具</span></a><a href="a10-react.html"><b>06</b><span>让思考接上行动：ReAct</span></a><a href="a11-reflect.html"><b>07</b><span>让失败变成经验</span></a><a href="a12-memory.html"><b>08</b><span>给它一段能记住的人生</span></a><a href="a13-search.html"><b>09</b><span>把一条线走成一张图</span></a><a href="a14-four.html"><b>10</b><span>四个模块，一把尺子</span></a><a href="a15-multi.html"><b>11</b><span>一次一问，撑不住真实任务</span></a><a href="a16-collab.html"><b>12</b><span>多角色协作的三种形态</span></a><a href="a17-cost.html"><b>13</b><span>每多一个角色，就多一份开销</span></a><a href="a18-build.html"><b>14</b><span>真要动手做，四个阶段</span></a><a href="a19-stack.html"><b>15</b><span>LangChain 与 LangGraph</span></a><a href="a20-platform.html"><b>16</b><span>五个平台，各站一个位置</span></a><a href="a21-papers.html"><b>A</b><span>十三篇，按问题索引</span></a><a href="a22-glossary.html"><b>B</b><span>术语表</span></a></div>
+  </div>
+
+  <h2><span class="n">5</span>这份材料的来源</h2>
+  <div class="sec">
+    <p>内容由三部分合成：</p>    <ul>
+      <li><b>原有的一份 Agent 入门长文</b>——提供了全部比方（小王助理、马具、三亚旅行）和主线叙述。</li>
+      <li><b>十三篇核心论文的原文摘要与实验数字</b>——CoT 的 56.9%、ReAct 的 +34%、Reflexion 的 91% pass@1 都回到论文核对过。</li>
+      <li><b>LangChain / LangGraph 1.0 的官方文档与分工说明</b>——2025 年 10 月两个库同时发 1.0 之后的关系变化，按官方口径写。</li>
+    </ul>    <div class="note"><p>这份课不含可运行的代码工程。它解决的是「知道每一层在做什么、为什么这么做、什么时候会失效」，具体用哪个库、怎么调参，取决于你的任务——那是拿到一批真题之后才能定的事。</p></div>
+  </div>
+
+  <div class="summary">
+    <h3>本页要点</h3>
+    <ol>
+      <li>Agent 不是「更会聊天的模型」，判断标准只有一条：给目标，它自己拆步骤、自己动手，直到交付。</li>
+      <li>先读第零幕：后面所有能力（工具、记忆、规划、协作）都建立在「四件套」这个拆法上。</li>
+      <li>遇到效果问题，先按 A 页的论文索引定位毛病，再决定改哪一层。</li>
+    </ol>
+  </div>
+
+  <h2><span class="n">★</span>自测</h2>
+  <div class="quiz">
+    <div class="qz">
+      <div class="q"><i>Q1</i>这套课反复强调的判断标准是什么？</div>
+      <div class="opts">
+        <button class="opt"><i>A</i><span>模型参数够大、回答够长</span></button>
+        <button class="opt" data-ok="1"><i>B</i><span>给目标而不是给指令，它自己拆步骤并真的动手</span></button>
+        <button class="opt"><i>C</i><span>能接入外部 API</span></button>
+        <button class="opt"><i>D</i><span>回答里带 Markdown 格式</span></button>
+      </div>
+      <div class="ex">接 API 只是手段。核心区别在「谁决定下一步」：Copilot 由你决定，Agent 自己决定并执行，直到交付。</div>
+    </div>
+    <div class="qz">
+      <div class="q"><i>Q2</i>为什么建议先读 0.4 再跳读其它页？</div>
+      <div class="opts">
+        <button class="opt"><i>A</i><span>因为它最短</span></button>
+        <button class="opt" data-ok="1"><i>B</i><span>因为后面讲的 ReAct、MemGPT 都在补「四件套」里的某一格，没有这个拆法就没有参照物</span></button>
+        <button class="opt"><i>C</i><span>因为它是唯一带公式的一页</span></button>
+        <button class="opt"><i>D</i><span>因为后面页面都要先通过它的自测</span></button>
+      </div>
+      <div class="ex">0.4 给出的 LLM + memory + planning + tool use 是全书的地图。缺了它，后面每篇论文都只能当成孤立技巧记。</div>
+    </div>
+  </div>
+  <div class="cite">
+    <b>资料出处</b>
+    原有 Agent 入门长文 + 十三篇论文原文 + LangChain / LangGraph 1.0 官方文档。
+  </div>
+
+  <div id="termIndex"></div>
+</main>
+<script src="assets/course.js?v=20261107b"></script>
+</body>
+</html>

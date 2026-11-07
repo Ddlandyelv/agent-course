@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-page="four">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>四个模块，一把尺子 · Agent 学习空间</title>
+<meta name="description" content="上百个 Agent 系统拆开之后，剩下的骨架只有四格。这一页给你一把尺子：看任何新框架，先问它改的是哪一格。">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Ccircle cx='16' cy='16' r='15' fill='%23F6F2EC'/%3E%3Ccircle cx='16' cy='9' r='3.2' fill='none' stroke='%23B8462A' stroke-width='2'/%3E%3Ccircle cx='9' cy='21' r='3.2' fill='none' stroke='%23B8462A' stroke-width='2'/%3E%3Ccircle cx='23' cy='21' r='3.2' fill='none' stroke='%23B8462A' stroke-width='2'/%3E%3Cpath d='M14.2 11.4L10.4 18.2M17.8 11.4l3.8 6.8M12.2 21h7.6' stroke='%23B8462A' stroke-width='1.6' fill='none'/%3E%3C/svg%3E">
+<link rel="stylesheet" href="assets/style.css?v=20261107b">
+</head>
+<body>
+<main class="doc" id="doc">
+
+  <header class="lesson-head">
+    <div class="kicker"><span class="sec-no">10</span><span>第二部分 · 从会说话到会动手</span><span>·</span><span>FOUR MODULES</span></div>
+    <h1>四个模块，一把尺子</h1>
+    <p class="lede">上百个 Agent 系统拆开之后，剩下的骨架只有四格。这一页给你一把尺子：看任何新框架，先问它改的是哪一格。</p>
+    <div class="meta-row">
+      <span class="pill acc">8 分钟</span>
+      <span class="pill">全课骨架</span>
+      <span class="pill">含框架对照</span>
+    </div>
+  </header>
+
+  <div class="whybox">
+    <div class="whybox-h">这一页在能力栈上的位置</div>
+    <div class="whybox-g">
+      <div class="wide"><b>对应环节</b><span>能力层 · 统一坐标</span></div>
+      <div><b>不学卡在哪</b><span>看新框架时只能记住名字，说不清它到底新在哪。</span></div>
+      <div><b>它解决什么</b><span>把任意 Agent 归到四格里，快速判断一个宣称是包装还是真改进。</span></div>
+    </div>
+  </div>
+
+  <h2><span class="n">1</span>把上百个系统拆成四格</h2>
+  <div class="sec">
+    <p>2023 年 8 月的综述做了一件很有用的事：它不再追问「什么是 Agent」，而是把已有的上百个系统拆开比对，发现大家干的是同一件事——<b>给一个角色，配一套记忆，让它会做计划，最后能动手。</b></p>    <div class="tw"><table class="tb">
+      <thead><tr><th style="width:18%">模块</th><th style="width:50%">管什么</th><th style="width:32%">决定什么</th></tr></thead>
+      <tbody>
+        <tr><td><b>P · Profile</b></td><td>身份、职责、性格、边界。通常写在系统提示里</td><td>语气与取舍</td></tr>
+        <tr><td><b>M · Memory</b></td><td>短期是当前对话，长期靠向量库。关键是检索策略</td><td>会不会重复犯错</td></tr>
+        <tr><td><b>PL · Planning</b></td><td>一次性排完（CoT、ToT）还是边做边改（ReAct、Reflexion）</td><td>能不能处理长任务</td></tr>
+        <tr><td><b>A · Action</b></td><td>调工具、写文件、发消息、改记忆</td><td>能力上限</td></tr>
+      </tbody>
+    </table></div>    <p>你可以把任意一个 Agent 归到这四个格子里。这不是分类学游戏，它是一把<b>可以立刻用起来的尺子</b>。</p>
+  </div>
+
+  <h2><span class="n">2</span>这把尺子怎么用</h2>
+  <div class="sec">
+    <p>看任何新框架、新产品，先问一句：<b>它改的是这四格里的哪一格？</b>答不上来，多半只是换了个说法。</p>    <div class="tw"><table class="tb">
+      <thead><tr><th style="width:46%">新东西宣称的能力</th><th style="width:54%">实际改的是哪一格</th></tr></thead>
+      <tbody>
+        <tr><td>「上下文更长，能记住整个项目」</td><td>M —— 短期记忆的容量</td></tr>
+        <tr><td>「支持工具自动编排」</td><td>PL + A —— 规划与行动</td></tr>
+        <tr><td>「多角色协作」</td><td>超出四格：多了角色之间的通信</td></tr>
+        <tr><td>「一键生成工作流」</td><td>A —— 把行动固化成流程，其实退回了流水线</td></tr>
+      </tbody>
+    </table></div>
+  </div>
+
+  <h2><span class="n">3</span>四个框架，各解决一件不同的事</h2>
+  <div class="sec">
+    <div class="tw"><table class="tb">
+      <thead><tr><th style="width:18%">名字</th><th style="width:38%">解决什么</th><th style="width:44%">一句话记住</th></tr></thead>
+      <tbody>
+        <tr><td><b>CoT</b></td><td>模型不会多步推理</td><td>让它把中间步骤写出来，别直接报答案</td></tr>
+        <tr><td><b>ReAct</b></td><td>光想会脱离事实</td><td>想一步、做一步、看一眼，再接着想</td></tr>
+        <tr><td><b>Reflexion</b></td><td>错了不会改</td><td>把失败写成一段复盘，下次开卷考试</td></tr>
+        <tr><td><b>ToT</b></td><td>一条路走到黑</td><td>同时想几条，打分，剪掉差的，能回头</td></tr>
+      </tbody>
+    </table></div>    <p>它们不是四个版本的同一样东西，而是四种不同的赌注：赌「多想一步有用」「赌多看一步有用」「赌复盘有用」「赌多试几条有用」。</p>
+  </div>
+
+  <h2><span class="n">4</span>这套分法的局限</h2>
+  <div class="sec">
+    <p>综述是 2023 年 8 月的切片。它有两块讲得薄，而这两年恰恰是进展最快的地方：</p>    <ul>
+      <li><b>多智能体协作</b>——四个格子里没有「角色之间怎么说话」这一项。三个 Agent 加起来的功能，不等于三个单体的并集。</li>
+      <li><b>靠强化学习自我进化</b>——四格是静态结构，不描述「越用越强」这件事。</li>
+    </ul>    <p>所以这一页是<b>骨架</b>，不是全部。第三部分会专门补协作那一块。</p>
+  </div>
+
+  <div class="summary">
+    <h3>本页要点</h3>
+    <ol>
+      <li>四格：Profile（是谁）、Memory（记得什么）、Planning（怎么想）、Action（怎么动）。</li>
+      <li>看新框架先问「它改的是哪一格」，答不上来多半只是换了说法。</li>
+      <li>这套分法没有「角色间通信」和「越用越强」两格，第三部分会补。</li>
+    </ol>
+  </div>
+
+  <h2><span class="n">★</span>自测</h2>
+  <div class="quiz">
+    <div class="qz">
+      <div class="q"><i>Q1</i>一个产品宣称「能自动编排工具」，按四格分法它主要改的是？</div>
+      <div class="opts">
+        <button class="opt"><i>A</i><span>Profile</span></button>
+        <button class="opt" data-ok="1"><i>B</i><span>Planning + Action</span></button>
+        <button class="opt"><i>C</i><span>Memory</span></button>
+        <button class="opt"><i>D</i><span>四格都没改</span></button>
+      </div>
+      <div class="ex">编排是「决定下一步做什么」（Planning）加上「真的去做」（Action）。</div>
+    </div>
+    <div class="qz">
+      <div class="q"><i>Q2</i>这套四格分法最大的局限是什么？</div>
+      <div class="opts">
+        <button class="opt"><i>A</i><span>没有实验数据</span></button>
+        <button class="opt" data-ok="1"><i>B</i><span>缺了多智能体之间的通信，以及「越用越强」这类动态演化</span></button>
+        <button class="opt"><i>C</i><span>只适用于西方模型</span></button>
+        <button class="opt"><i>D</i><span>没有覆盖记忆</span></button>
+      </div>
+      <div class="ex">它是 2023 年 8 月的静态切片。多智能体协作和 RL 自我进化，是这两年增长最快的两块。</div>
+    </div>
+  </div>
+  <div class="cite">
+    <b>资料出处</b>
+    Wang et al.《A Survey on Large Language Model based Autonomous Agents》(arXiv:2308.11432)。
+  </div>
+
+  <div id="termIndex"></div>
+</main>
+<script src="assets/course.js?v=20261107b"></script>
+</body>
+</html>

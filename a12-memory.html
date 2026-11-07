@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-page="memory">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>给它一段能记住的人生 · Agent 学习空间</title>
+<meta name="description" content="模型本身没有记忆，所谓「记得」都是你重新贴给它看。这一页讲三层记忆、记忆流四步，以及做记忆最容易踩的三个坑。">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Ccircle cx='16' cy='16' r='15' fill='%23F6F2EC'/%3E%3Ccircle cx='16' cy='9' r='3.2' fill='none' stroke='%23B8462A' stroke-width='2'/%3E%3Ccircle cx='9' cy='21' r='3.2' fill='none' stroke='%23B8462A' stroke-width='2'/%3E%3Ccircle cx='23' cy='21' r='3.2' fill='none' stroke='%23B8462A' stroke-width='2'/%3E%3Cpath d='M14.2 11.4L10.4 18.2M17.8 11.4l3.8 6.8M12.2 21h7.6' stroke='%23B8462A' stroke-width='1.6' fill='none'/%3E%3C/svg%3E">
+<link rel="stylesheet" href="assets/style.css?v=20261107b">
+</head>
+<body>
+<main class="doc" id="doc">
+
+  <header class="lesson-head">
+    <div class="kicker"><span class="sec-no">08</span><span>第二部分 · 从会说话到会动手</span><span>·</span><span>MEMORY</span></div>
+    <h1>给它一段能记住的人生</h1>
+    <p class="lede">模型本身没有记忆，所谓「记得」都是你重新贴给它看。这一页讲三层记忆、记忆流四步，以及做记忆最容易踩的三个坑。</p>
+    <div class="meta-row">
+      <span class="pill acc">11 分钟</span>
+      <span class="pill">含 MemGPT</span>
+      <span class="pill">含三个常见错法</span>
+    </div>
+  </header>
+
+  <div class="whybox">
+    <div class="whybox-h">这一页在能力栈上的位置</div>
+    <div class="whybox-g">
+      <div class="wide"><b>对应环节</b><span>能力层 · 记忆</span></div>
+      <div><b>不学卡在哪</b><span>长任务做到一半就丢上下文，同一类约束每次都要重新说一遍。</span></div>
+      <div><b>它解决什么</b><span>把「记住」拆成可检索的外部结构，让长任务有连续性。</span></div>
+    </div>
+  </div>
+
+  <h2><span class="n">1</span>缺什么：每次都是初次见面</h2>
+  <div class="sec">
+    <p>模型本身没有记忆。所谓「它记得我说过的话」，是你每次把记录重新贴给它看。贴不进去（超出上下文）或没贴（换了个会话），它就真的忘了。</p>    <p>所以记忆模块要解决的从来不是「存」，而是<b>「此刻该想起哪一条」</b>。这是它最常被低估的地方。</p>
+  </div>
+
+  <h2><span class="n">2</span>人的三层，Agent 的三层</h2>
+  <div class="sec">
+    <p>这个映射不是修辞，工程上真的这么分：</p>    <div class="tw"><table class="tb">
+      <thead><tr><th style="width:20%">人的记忆</th><th style="width:50%">Agent 里对应什么</th><th style="width:30%">限制</th></tr></thead>
+      <tbody>
+        <tr><td>感觉记忆</td><td>原始输入的嵌入表示：文本、图像、音频都先变成向量</td><td>只在当下有效，不保留</td></tr>
+        <tr><td>短期记忆</td><td>上下文窗口里的对话历史</td><td>有硬上限，塞满就得压缩或丢弃</td></tr>
+        <tr><td>长期记忆</td><td>外部向量数据库，按需检索</td><td>存得下，但「取哪条」是难题</td></tr>
+      </tbody>
+    </table></div>    <p>长期记忆为什么用向量库？因为它要解决「海量知识的存、检、配」。把数据转成向量之后，用最大内积搜索（MIPS）能在毫秒级找出语义相近的条目——注意是<b>模糊匹配</b>，没有标准答案，这正是它能支撑开放场景的原因。</p>    <p>成本上也有账：向量库的存储成本比把知识塞进神经网络低 2 到 4 个数量级。所以在上下文窗口还很贵的今天，外挂记忆库比自己训模型划算得多。</p>
+  </div>
+
+  <h2><span class="n">3</span>Generative Agents：记忆流四步</h2>
+  <div class="sec">
+    <p>2023 年 4 月，Stanford 的 Park 等人在一个叫 Smallville 的小镇里放了 25 个角色，每个都有「记忆流」：</p>    <div class="flow"><div class="fn"><b>观察</b>经历记成自然语言</div><div class="fa">→</div><div class="fn"><b>检索</b>三项打分取前几条</div><div class="fa">→</div><div class="fn"><b>反思</b>零散记忆总结成结论</div><div class="fa">→</div><div class="fn"><b>计划</b>据此排一天的行程</div></div>    <p>检索按三个维度打分：<b>新近度</b>（刚发生的更容易想起）、<b>重要性</b>（打分来自模型自己判断）、<b>相关性</b>（和当前情境的语义相似度）。</p>    <p>最有名的结果是涌现出来的：只告诉一个角色「想办情人节派对」，两天后邀请自己扩散开，人真的到场了——<b>没有一行代码编排这场派对</b>。</p>    <div class="def">
+      <div class="def-h">关键数字<span class="loc">arXiv:2304.03442 · UIST 2023</span></div>
+      <p>25 个角色、两天、全自然语言记忆。成本极高——每个角色都在不停调模型。</p>
+    </div>
+  </div>
+
+  <h2><span class="n">4</span>MemGPT：把上下文当内存管</h2>
+  <div class="sec">
+    <p>上下文窗口再大也有限。聊得久了必然塞不下，而无脑截断会把它刚记住的关键信息扔掉。</p>    <p>MemGPT 借操作系统的内存管理：<b>上下文 = 内存（快但小），外部存储 = 硬盘（慢但大）</b>。模型自己调函数在两者之间搬数据——写回、换入、检索。「该忘什么」由它自己判断，不是按时间粗暴删。</p>    <div class="tw"><table class="tb">
+      <thead><tr><th style="width:24%">OS 里的概念</th><th style="width:38%">MemGPT 里对应</th><th style="width:38%">作用</th></tr></thead>
+      <tbody>
+        <tr><td>内存</td><td>上下文窗口</td><td>当前推理能直接看到的内容</td></tr>
+        <tr><td>硬盘</td><td>外部存储 / 向量库</td><td>放得下但需要主动换入</td></tr>
+        <tr><td>换页</td><td>模型自己调的记忆读写函数</td><td>决定什么进、什么出</td></tr>
+        <tr><td>中断</td><td>上下文快满时触发整理</td><td>避免直接报错</td></tr>
+      </tbody>
+    </table></div>    <p>局限：多了一层「管理记忆」的调用，成本和延迟都上去；搬错了会直接把关键信息弄丢，而且很难发现。</p>
+  </div>
+
+  <h2><span class="n">5</span>做记忆最常见的三个错</h2>
+  <div class="sec">
+    <div class="tw"><table class="tb">
+      <thead><tr><th style="width:26%">错法</th><th style="width:40%">后果</th><th style="width:34%">改法</th></tr></thead>
+      <tbody>
+        <tr><td>把全部对话原样存下来</td><td>检索时噪声太多，取回来的都是无关闲聊</td><td>存「结论与事实」，不存过程</td></tr>
+        <tr><td>只按时间倒序取</td><td>三个月前那条关键约束永远想不起来</td><td>新近度 + 相关性 + 重要性，三项加权</td></tr>
+        <tr><td>写完就存，从不整理</td><td>同一条事实存了二十遍，互相矛盾</td><td>定期合并、去重、更新而不是追加</td></tr>
+      </tbody>
+    </table></div>    <div class="note"><p>一条实用经验：<b>存「我学到了什么」，不存「我说了什么」。</b>Reflexion 的复盘之所以好用，就是因为它存的是结论。</p></div>
+  </div>
+
+  <div class="summary">
+    <h3>本页要点</h3>
+    <ol>
+      <li>记忆的难点不在存，在「此刻该想起哪一条」。</li>
+      <li>三层：嵌入表示（当下）、上下文（短期）、向量库（长期）。</li>
+      <li>Generative Agents 的四步：观察 → 检索（新近度/重要性/相关性）→ 反思 → 计划。</li>
+      <li>MemGPT 把上下文当内存、外部存储当硬盘，由模型自己决定换入换出。</li>
+    </ol>
+  </div>
+
+  <h2><span class="n">★</span>自测</h2>
+  <div class="quiz">
+    <div class="qz">
+      <div class="q"><i>Q1</i>长期记忆为什么常用向量库？</div>
+      <div class="opts">
+        <button class="opt"><i>A</i><span>因为它比数据库便宜</span></button>
+        <button class="opt" data-ok="1"><i>B</i><span>因为它能用语义相似度做模糊匹配，适合开放场景</span></button>
+        <button class="opt"><i>C</i><span>因为它支持事务</span></button>
+        <button class="opt"><i>D</i><span>因为模型只能读向量</span></button>
+      </div>
+      <div class="ex">记忆检索是模糊匹配，不是精确查询。用户问「上次那个关于预算的结论」，你不可能用 SQL 精确匹配。</div>
+    </div>
+    <div class="qz">
+      <div class="q"><i>Q2</i>Generative Agents 的检索按哪三个维度打分？</div>
+      <div class="opts">
+        <button class="opt"><i>A</i><span>长度、时间、语言</span></button>
+        <button class="opt" data-ok="1"><i>B</i><span>新近度、重要性、相关性</span></button>
+        <button class="opt"><i>C</i><span>准确率、召回率、F1</span></button>
+        <button class="opt"><i>D</i><span>成本、延迟、吞吐</span></button>
+      </div>
+      <div class="ex">三项加权是这套设计的核心。只用新近度会丢长远约束，只用相关性会反复想起同一件事。</div>
+    </div>
+  </div>
+  <div class="cite">
+    <b>资料出处</b>
+    Park et al.《Generative Agents》(arXiv:2304.03442)；Packer et al.《MemGPT》(arXiv:2310.08560)。
+  </div>
+
+  <div id="termIndex"></div>
+</main>
+<script src="assets/course.js?v=20261107b"></script>
+</body>
+</html>

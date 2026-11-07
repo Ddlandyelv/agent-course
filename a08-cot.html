@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-page="cot">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>先让模型把话说完：CoT 与自洽 · Agent 学习空间</title>
+<meta name="description" content="它以前抢答，中间过程全压在一次输出里，所以多步任务必崩。这一页讲清 CoT 改了什么、为什么几乎免费，以及自洽怎么再往上加一层。">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Ccircle cx='16' cy='16' r='15' fill='%23F6F2EC'/%3E%3Ccircle cx='16' cy='9' r='3.2' fill='none' stroke='%23B8462A' stroke-width='2'/%3E%3Ccircle cx='9' cy='21' r='3.2' fill='none' stroke='%23B8462A' stroke-width='2'/%3E%3Ccircle cx='23' cy='21' r='3.2' fill='none' stroke='%23B8462A' stroke-width='2'/%3E%3Cpath d='M14.2 11.4L10.4 18.2M17.8 11.4l3.8 6.8M12.2 21h7.6' stroke='%23B8462A' stroke-width='1.6' fill='none'/%3E%3C/svg%3E">
+<link rel="stylesheet" href="assets/style.css?v=20261107b">
+</head>
+<body>
+<main class="doc" id="doc">
+
+  <header class="lesson-head">
+    <div class="kicker"><span class="sec-no">04</span><span>第二部分 · 从会说话到会动手</span><span>·</span><span>CHAIN OF THOUGHT</span></div>
+    <h1>先让模型把话说完：CoT 与自洽</h1>
+    <p class="lede">它以前抢答，中间过程全压在一次输出里，所以多步任务必崩。这一页讲清 CoT 改了什么、为什么几乎免费，以及自洽怎么再往上加一层。</p>
+    <div class="meta-row">
+      <span class="pill acc">9 分钟</span>
+      <span class="pill">含两个关键数字</span>
+      <span class="pill">论文线起点</span>
+    </div>
+  </header>
+
+  <div class="whybox">
+    <div class="whybox-h">这一页在能力栈上的位置</div>
+    <div class="whybox-g">
+      <div class="wide"><b>对应环节</b><span>能力层 · 推理</span></div>
+      <div><b>不学卡在哪</b><span>以为模型「不会算」，于是去换更大的模型，其实只是没让它把步骤写出来。</span></div>
+      <div><b>它解决什么</b><span>把中间过程变成输出的一部分，让多步任务第一次可算、可查。</span></div>
+    </div>
+  </div>
+
+  <h2><span class="n">1</span>缺什么：它抢答</h2>
+  <div class="sec">
+    <p>给模型几个例子、直接要答案，遇到多步计算就崩。原因不是它不会算，是<b>中间过程没有被算出来</b>——它得在一次输出里把推理压扁成一个结果。</p>    <p>步骤一多，前面错一点后面全错，而且你从答案上看不出错在哪。</p>
+  </div>
+
+  <h2><span class="n">2</span>怎么做：把过程写出来再答</h2>
+  <div class="sec">
+    <p>Wei 等人在 2022 年 1 月发现一个几乎免费的改法：把示例里的答案改写成「中间推导 + 最终结果」，模型会照着学，自己把步骤写出来。</p>    <pre class="code">不用 CoT：
+  Q: 小明有 5 个苹果，又买了 3 袋，每袋 4 个，一共几个？
+  A: 17
+
+用 CoT：
+  Q: 小明有 5 个苹果，又买了 3 袋，每袋 4 个，一共几个？
+  A: 原有 5 个。3 袋每袋 4 个，是 12 个。5 + 12 = 17。所以答案是 17。</pre>    <p>改的只是<b>示例的写法</b>，不改模型、不加训练。后来大家发现，连示例都不用给，加一句「Let's think step by step」也能提升一大截——这叫 Zero-shot CoT。</p>    <div class="tw"><table class="tb">
+      <thead><tr><th style="width:22%">做法</th><th style="width:38%">怎么给</th><th style="width:40%">代价</th></tr></thead>
+      <tbody>
+        <tr><td>Few-shot CoT</td><td>给几条带推导的示例</td><td>示例要挑，写不好会带偏格式</td></tr>
+        <tr><td>Zero-shot CoT</td><td>只加一句「一步步想」</td><td>几乎零成本，但对简单题是浪费</td></tr>
+        <tr><td>Self-Consistency</td><td>采样多条路径，答案投票</td><td>成本乘以采样条数</td></tr>
+      </tbody>
+    </table></div>
+  </div>
+
+  <h2><span class="n">3</span>关键数字</h2>
+  <div class="sec">
+    <div class="def">
+      <div class="def-h">GSM8K 小学数学题<span class="loc">arXiv:2201.11903 · NeurIPS 2022</span></div>
+      <p>PaLM 540B 从 <b>17.9%</b> 提到 <b>56.9%</b>——只是改了提示词里示例的写法。</p>
+    </div>    <div class="def">
+      <div class="def-h">自洽（Self-Consistency）再往上加一层<span class="loc">arXiv:2203.11171 · ICLR 2023</span></div>
+      <p>同一个问题采样多条推理路径，<b>取出现次数最多的答案</b>，不是挑最好的一条。GSM8K 从 56.9% 再提到 <b>74.4%</b>。</p>
+    </div>    <div class="note"><p>注意「投票」这个词。它只在答案能比对的任务上成立——数学题可以，写文章、做设计不行。</p></div>
+  </div>
+
+  <h2><span class="n">4</span>代价与适用边界</h2>
+  <div class="sec">
+    <div class="tw"><table class="tb">
+      <thead><tr><th style="width:16%"></th><th style="width:42%">好处</th><th style="width:42%">代价</th></tr></thead>
+      <tbody>
+        <tr><td><b>CoT</b></td><td>几乎免费，多步任务提升明显</td><td>输出变长、变慢；推理链本身可能是编的</td></tr>
+        <tr><td><b>自洽</b></td><td>准确率显著提升，实现极简</td><td>成本 ×N；只适合可投票的答案</td></tr>
+      </tbody>
+    </table></div>    <p>还有一条常被忽略的前提：<b>规模不够时，CoT 反而更差</b>。小模型也能写出流畅的步骤，但推理是编的，比直接答还糟。论文里大约 100B 以下基本没收益。</p>    <p>今天的对应：所有 Agent 的 system prompt 里那句「先想清楚再动手」，源头就在这儿。</p>
+  </div>
+
+  <div class="summary">
+    <h3>本页要点</h3>
+    <ol>
+      <li>CoT 不改模型，只改示例写法：把答案改写成「推导 + 结果」。</li>
+      <li>GSM8K 上 PaLM 540B 从 17.9% 到 56.9%；自洽再提到 74.4%。</li>
+      <li>小模型用 CoT 会更差——它写得出步骤，但推理是编的。</li>
+    </ol>
+  </div>
+
+  <h2><span class="n">★</span>自测</h2>
+  <div class="quiz">
+    <div class="qz">
+      <div class="q"><i>Q1</i>CoT 到底改了什么？</div>
+      <div class="opts">
+        <button class="opt"><i>A</i><span>模型参数</span></button>
+        <button class="opt" data-ok="1"><i>B</i><span>示例的写法：从只给答案改成给推导过程</span></button>
+        <button class="opt"><i>C</i><span>训练数据</span></button>
+        <button class="opt"><i>D</i><span>温度参数</span></button>
+      </div>
+      <div class="ex">这是它最反直觉的地方：不改权重、不加训练，只换提示词的写法，效果就能翻倍。</div>
+    </div>
+    <div class="qz">
+      <div class="q"><i>Q2</i>自洽（Self-Consistency）为什么不能用在写文章上？</div>
+      <div class="opts">
+        <button class="opt"><i>A</i><span>因为写文章太慢</span></button>
+        <button class="opt" data-ok="1"><i>B</i><span>因为它靠「答案能比对、能投票」成立，文章没有唯一答案可比</span></button>
+        <button class="opt"><i>C</i><span>因为模型不会写文章</span></button>
+        <button class="opt"><i>D</i><span>因为成本太高</span></button>
+      </div>
+      <div class="ex">投票的前提是答案可枚举、可比较。开放生成没有这个前提。</div>
+    </div>
+  </div>
+  <div class="cite">
+    <b>资料出处</b>
+    Wei et al.《Chain-of-Thought Prompting Elicits Reasoning in LLMs》(arXiv:2201.11903)；Wang et al.《Self-Consistency》(arXiv:2203.11171)。
+  </div>
+
+  <div id="termIndex"></div>
+</main>
+<script src="assets/course.js?v=20261107b"></script>
+</body>
+</html>
